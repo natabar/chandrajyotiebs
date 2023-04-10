@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block body %}
+<div class="form-container">
+    <h1 style="text-align: center;">Register your business</h1>
+        <form class="row g-3" action="/register-business" method="post">
+            <div class="col-md-6">
+              <label class="form-label">Business Name</label>
+              <input name="business_name" type="business_name" class="form-control" required>
+            </div>
+            <div class="col-md-5">
+              <label class="form-label">Proprietor</label>
+              <input name = "proprietor" type="text" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">PAN/VAT</label>
+              <input name="panvat" type="text" class="form-control" required>
+            </div>
+            <div class="col-md-5">
+              <label class="form-label">Registered Year</label>
+              <input name = "est_year" type="text" class="form-control" required>
+            </div>
+            <div class="col-md-11">
+              <label for="inputAddress" class="form-label">Address</label>
+              <input name="address" type="text" class="form-control" id="inputAddress" placeholder="Tinpatan 11, Chakmake, Sindhuli" required>
+            </div>
+            <div class="col-md-11">
+                <label for="inputAddress" class="form-label">Description</label>
+                <textarea name="description" class="form-control" placeholder="Business description . . ." rows="3"></textarea>
+            </div>
+
+
+            <div class="col-md-5">
+              <label class="form-label">Service First</label>
+              <input name = "service1" type="text" class="form-control" required>
+            </div>
+            <div class="col-md-11">
+              <label for="inputAddress" class="form-label">Describe First Service</label>
+              <input name="service1_desc" type="text" class="form-control" id="inputAddress" required>
+            </div>
+
+            <div class="col-md-5">
+              <label class="form-label">Service Second</label>
+              <input name = "service2" type="text" class="form-control" required>
+            </div>
+            <div class="col-md-11">
+              <label for="inputAddress" class="form-label">Describe Second Service</label>
+              <input name="service2_desc" type="text" class="form-control" id="inputAddress" required>
+            </div>
+
+            <div class="col-md-5">
+              <label class="form-label">Service Third</label>
+              <input name = "service3" type="text" class="form-control" required>
+            </div>
+            <div class="col-md-11">
+              <label for="inputAddress" class="form-label">Describe Third Service</label>
+              <input name="service3_desc" type="text" class="form-control" id="inputAddress" required>
+            </div>
+
+            <div class="col-md-5">
+              <label class="form-label">Service Fourth</label>
+              <input name = "service4" type="text" class="form-control" required>
+            </div>
+            <div class="col-md-11">
+              <label for="inputAddress" class="form-label">Describe Frouth Service</label>
+              <input name="service4_desc" type="text" class="form-control" id="inputAddress" required>
+            </div>
+
+            <div class="col-md-11">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck" required>
+                <label class="form-check-label" for="gridCheck">
+                  I Agree the terms and conditions
+                </label>
+              </div>
+            </div>
+            <div class="mb-3" style="text-align: center;">
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+          </form>
+</div>
+{% endblock %}

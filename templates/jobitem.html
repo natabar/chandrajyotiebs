@@ -1,0 +1,19 @@
+<div class="job-container">
+    <div class="row" style="background-color: rgb(240, 240, 240); padding: 1.5%; border-radius: 5px;">
+        <div class="col-sm-6">
+            <h4 class="card-title" style="padding-bottom: 10px;">{{ job['title'] }} ({{ job['jobcount'] }})</h4>
+            <span>{{ job['jobtime'] }}</span><br>
+            <span>Company: {{ job['company'] }}</span><br>
+            <span>Location: {{ job['location'] }}</span>
+        </div>
+        <div class="col-sm-4 job-each">
+            <div style="padding-bottom: 4px;">
+                <h4 class="card-title"></h4>
+                <span><b>Job Level:</b> {{ job['joblevel'] }}</span><br>
+                <span><b>Offered Salary:</b> {{ job['salary'] }}</span><br>
+                <span><b>Deadline:</b> {{ job['deadline'] }}</span><br>
+            </div>
+            <a href="/careers/{{job['id']}}" class="btn btn-primary">View Job Details</a>
+        </div>
+    </div>
+  </div>

@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Success!
+{% endblock %}
+
+{% block body %}
+<div class="card text-center">
+    <div class="card-body" style="margin-top: 50px;">
+        <img src="/static/checked.png" height="100px">
+        <div>
+            <h4 class="alert-heading">Congratulations!</h4>
+        </div>
+        <div class="alert alert-success">
+            <p>{{ output }}</p>
+          </div>
+    </div>
+</div>
+{% endblock %}

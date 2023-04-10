@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Careers
+{% endblock %}
+
+{% block body %}
+<div class="container-md career-container">
+    <img id="career-banner" class="img-fluid" src="static/WeAreHiring.jpg" height="320" width="100%">
+    <h1 class="text-center mt-2 mb-4">Find the right fit</h1>
+    <p class="lead">
+        Welcome to our job finding site, where job seekers and employers come together to find their perfect match. Our platform offers a user-friendly experience that allows job seekers to easily search and apply for job listings. View our open jobs today to find your next opportunity.
+        <br>At our job finding site, we are committed to helping job seekers and employers find their perfect match. Join our community today and take the next step in your career journey.
+    </p>
+    <h2 class="text-center mt-2 mb-4">Job Openings</h2>
+    {% for job in jobs %}
+        {% include 'jobitem.html' %}
+    {% endfor %}
+</div>
+{% endblock %}
