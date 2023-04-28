@@ -233,8 +233,8 @@ body
 }
 
 .btn-back {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #d23228;
+    color: #ffffff;
     padding: 8px 25px;
     border: 1px black;
     border-radius: 3px;
@@ -242,6 +242,6 @@ body
     box-shadow: 1px 1px 1px 2px rgba(0,0,0,0.1);
 }
 .btn-back:hover {
-    background-color: #d23228;
+    background-color: #a50c30;
     color: #ffffff;
 }
