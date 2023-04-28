@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-center">
+    <div class="card mb-4" style="max-width: 768px;">
+        <div class="row g-0">
+          <div class="col-md-7">
+            <div class="card-body">
+                <form class="login-form" action="" method="post">
+                    <h3>Login</h3>
+                    <label style="font-size: 12px; color: rgb(150, 150, 150);">Enter your username to login</label><br><br>
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" required>
+                    <a href="/forgot-username"><p style="text-align: right;">Forgot Username?</p></a>
+                    <input type="submit" value="Continue"><br><br>
+                    <label style="font-size: 13px; color: rgb(150, 150, 150);">Don’t have an account yet? <a href="#">Create one.</a></label>
+                </form>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <img class="bd-placeholder-img img-fluid rounded-start" width="100%" height="250" src="/static/login-banner.jpg">
+          </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

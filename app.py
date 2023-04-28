@@ -34,6 +34,10 @@ def after_request(response):
 def index():
         return render_template("index.html")
 
+@app.route("/contact-us")
+def contact_us():
+    return render_template("contact-us.html")
+
 @app.route("/about-us")
 def about_us():
     return render_template("about-us.html")
@@ -64,3 +68,23 @@ def business():
 @app.route("/error")
 def error():
     return render_template("error.html")
+
+@app.route("/terms-and-conditions")
+def terms_and_conditions():
+    return render_template("terms-and-conditions.html")
+
+@app.route("/privacy-policy")
+def privacy_policy():
+    return render_template("privacy-policy.html")
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+@app.route("/forgot-username")
+def forgot_username():
+    return render_template("forgot-username.html")
+
+@app.route("/login-continue")
+def continue_login():
+    return render_template("login-continue.html")
