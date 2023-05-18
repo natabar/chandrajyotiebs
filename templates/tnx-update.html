@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Test!
+{% endblock %}
+
+{% block body %}
+<div class="container-sm">
+  <h3 class="text-center brand-color">Transaction Update Form</h3>
+  <hr class="border border-danger border-1 opacity-50">
+
+  <form class="row g-3" action="/tnx_update" method="post">
+      <div class="col-md-10">
+          <label class="form-label">Deposited By<r class="required-field"> *</r></label>
+          <input name="deposited_by" type="text" class="form-control" required>
+      </div>
+      <div class="col-md-5" style="padding-right: 1%;">
+        <label class="form-label">Amount<r class="required-field"> *</r></label>
+        <input name="amount" type="text" class="form-control" required>
+      </div>
+
+      <div class="col-md-5">
+        <label class="form-label">Transaction Date<r class="required-field"> *</r></label>
+        <input name = "date" type="date" class="form-control" required>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Photo<r class="required-field"> *</r></label>
+        <input name="photo" type="file" class="form-control form-control-file" id="photo" accept="image/*" required>
+      </div>
+
+      <div class="mb-3">
+          <button class="btn btn-danger" type="submit">Submit</button>
+      </div>
+
+    </form>
+</div>
+{% endblock %}

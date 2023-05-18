@@ -1,41 +1,50 @@
 {% extends "layout.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}
+  Home
+{% endblock %}
 
 {% block body %}
 <div id="carouselExampleControls" class="carousel slide pointer-event" data-bs-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item">
-        <img class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" src="/static/cover.jpg" width="800px" height="400px">
+        <img class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" src="/static/images/cover.jpg" width="800px" height="400px">
       </div>
       <div class="carousel-item">
-        <img class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" src="/static/cover1.jpg" width="800px" height="400px">
+        <img class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" src="/static/images/cover1.jpg" width="800px" height="400px">
       </div>
       <div class="carousel-item active">
-        <img class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" src="/static/cover1.jpg" width="800px" height="400px">
+        <img class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" src="/static/images/cover1.jpg" width="800px" height="400px">
       </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
   </div>
+  <!--Beginning of Second Header-->
+  <div class="second-header brand-background">
+    <ul class="nav justify-content-center brand-background">
+      <li class="nav-item">
+        <a class="nav-link link-light" aria-current="page" href="#">School Overview</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link link-light" href="#">CJ Leadership</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link link-light" href="#">CJ at a Glance</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link link-light" href="#">Why CJ?</a>
+      </li>
+    </ul>
+  </div>
+  <!--End of Second Header-->
 <div class="row card-business">
   <div id="borderDemo2" class="col business">
-      <div class="business-title brand-color">
-          <h1>Chandrajyoti English Boarding School Sindhuli</h1>
-      </div>
-      <div class="business-content brand-color">
-          <p>Located in the heart of Tinpatan, our school delivers the best of School education, following the curriculum from Curriculum Development Center (CDC), adapted to meet the needs of our students aged 4 and above. Students come to Chandrajyoti for our strong roots and truly personalised approach to learning, which enable your child to achieve the very best that they are capable of at pre-school and school level. Our commitment to maintaining a low teacher to student ratio, with small class sizes, means we have the time to identify, celebrate and develop excellence in every child.</p>
+      <div class="business-content text-dark">
+          <p class="lead">Located in the heart of Tinpatan, our school delivers the best of School education, following the curriculum from Curriculum Development Center (CDC), adapted to meet the needs of our students aged 4 and above. Students come to Chandrajyoti for our strong roots and truly personalised approach to learning, which enable your child to achieve the very best that they are capable of at pre-school and school level. Our commitment to maintaining a low teacher to student ratio, with small class sizes, means we have the time to identify, celebrate and develop excellence in every child.</p>
       </div>
   </div>
   <div class="col business">
       <div>
-          <img class="img-fluid rounded" src="/static/photo-1.jpg">
+          <img class="img-fluid rounded" src="/static/images/photo-1.jpg">
       </div>
   </div>
 </div><br>

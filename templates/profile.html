@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block body %}
+<div style="background-color: #f8f9fa;">
+    <div class="profile-card">
+      <a href="static/image_profile/img{{ profile[0] }}.jpg" target="_blank"><img src="static/image_profile/img{{ profile[0] }}.jpg" alt="Profile Avatar" class="img-fluid" style="width: 200px; height: 200px;"></a>
+      <p><strong>Name:</strong> {{ profile[1] }}</p>
+      <p><strong>Email:</strong> {{ profile[2] }}</p>
+      <p><strong>Phone:</strong> {{profile[3] }}</p>
+      <p><strong>Position:</strong> Director</p>
+      <p><strong>Department:</strong> Education</p>
+      <p><strong>Location:</strong> Tinpatan 11, Chakmake, Sindhuli</p>
+      <p><strong>About Me:</strong><br> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel metus aliquam, vehicula ante ac, fringilla dui. Vivamus nec ligula sed neque cursus cursus. Proin malesuada eleifend feugiat. In sit amet viverra velit, sed gravida nunc. Vestibulum convallis, urna et auctor euismod, turpis mi rutrum nisi, sed volutpat nisl lectus eu dolor.</p>
+    </div>
+</div>
+{% endblock %}

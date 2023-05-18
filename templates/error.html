@@ -1,17 +1,17 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Success!
+Error!
 {% endblock %}
 
 {% block body %}
 <div class="card text-center">
     <div class="card-body" style="margin-top: 50px;">
-        <img src="/static/close.png" height="100px">
+        <img src="/static/images/close.png" height="100px">
         <div>
-            <h4 class="alert alert-danger">Sorry!</h4>
+            <h4 class="alert">Error {{ code }}!</h4>
         </div>
-        <div class="alert alert-danger">
+        <div class="alert lead">
             <p>{{ message }}</p>
           </div>
     </div>

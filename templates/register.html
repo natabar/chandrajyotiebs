@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block body %}
+<div class="container-sm">
+    <h1 style="text-align: center;">Create an account</h1>
+
+    <hr class="border border-danger border-1 opacity-50">
+
+    <form class="row g-3" action="/register" method="post">
+        <div class="col-md-6">
+            <label class="form-label">Full Name<r class="required-field"> *</r></label>
+            <input name="full_name" type="text" class="form-control" required>
+        </div>
+        <div class="col-md-5">
+            <label class="form-label">Email<r class="required-field"> *</r></label>
+            <input name="email" type="email" class="form-control" required>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">mobile<r class="required-field"> *</r></label>
+          <input name = "mobile" type="text" class="form-control" required>
+        </div>
+
+        <div class="col-md-5">
+            <label class="form-label">Access Key<r class="required-field"> *</r></label>
+            <input name = "access_key" type="text" class="form-control" required>
+          </div>
+
+        <!--For Student's father and Mother-->
+        <div class="col-md-6">
+            <label class="form-label">Password<r class="required-field"> *</r></label>
+            <input name="password" type="password" class="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+        </div>
+        <div class="col-md-5">
+            <label class="form-label">Confirm Password<r class="required-field"> *</r></label>
+            <input name="confirm_pwd" type="password" class="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+        </div>
+        <!---->
+
+        <div class="col-md-11">
+          <div class="form-check">
+            <input class="form-check-input is-invalid" type="checkbox" id="invalidCheck3" aria-describedby="invalidCheck3Feedback" required>
+            <label class="form-check-label" for="invalidCheck3">
+              I Agree the <a href="/terms-and-conditions" style="color: brown;">terms and conditions</a>
+            </label>
+            <div id="invalidCheck3Feedback" class="invalid-feedback">
+              You must agree before submitting.
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+            <button class="btn btn-danger" type="submit">Submit</button>
+        </div>
+
+      </form>
+</div>
+{% endblock %}

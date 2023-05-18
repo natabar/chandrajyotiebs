@@ -2,17 +2,18 @@ from flask import redirect, render_template, request, session
 from functools import wraps
 from nepali_phone_number import NepaliPhoneNumber
 import requests, math
+from datetime import date, datetime
 
-sociair_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiOWIzY2Y4YzI0NWQyNWFhY2I0YTVjNDBjNDY4ZjIxMDcwMmFmZjk1NWNhMzJmYmU2MmZlY2M1MmUzNzc3ZjA4YjU2NzM5NTc0MmVkZWE5YWMiLCJpYXQiOjE2NjEyNzY4NDguNjk3Njg3LCJuYmYiOjE2NjEyNzY4NDguNjk3NjkxLCJleHAiOjE2OTI4MTI4NDguNjkzMzc0LCJzdWIiOiIzNDUiLCJzY29wZXMiOltdfQ.aBCgOYiLvd2BLHyK5Tb19O5S0lxdeqOZvN3GNqoUe2KoG375EyEP_6g0C29qBPBDo2DRy2S2MU5Qqx4JhF_qbg'
+sociair_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiOTdhMGI4Y2MyMjlkYjg0ZDQ0NGYwMTdlNjFhYmM3ZTMxZmI2YzlkZGI0ZTlhNGRmNjQ0M2IzOTUzNmI3NmQyOWQxNGE4M2Q2ZjkxNWJjODEiLCJpYXQiOjE2ODM1NzQ0NjYuNDg5NjM4LCJuYmYiOjE2ODM1NzQ0NjYuNDg5NjQ0LCJleHAiOjE3MTUxOTY4NjYuNDcxMTQ0LCJzdWIiOiIxMDY4Iiwic2NvcGVzIjpbXX0.cGROAmZUbpbeNN4dKsVVe5IEWBRzLupnVjR3j6gMRMrEfKEX3vfe6wxKDexhLhafU4MAp5rr42ikyH9lMfXZcMNzoMxNmRyAcJkqLsbyAWK9lEaEo9cBRnQJZZ7QBu28EnH134Jy3VzM2hbmupj9vVShk1juZeSdSJnyHKrc7zUpeu4nCO738Q2e4HA1Engc2-erpdJ8ZYYIkPnJYf5eLM09MZgY6nswbOzQgLcDNhtQ3NH6eySLTBYmQiIWJJ9StAUJl4rY1Y1ivGEiRUSSZZfS4O4nOsnBYHhes1SHPO6Btyhl91h4DZ3tKWJ2B7p8mj4WHl366aJ7MEHI31WKaVA8gfh4v4tkgpHWrSLfTnaYhWerfvmgd54z7DskMMpvqixFQ3wo81lmcjFkDbiWaGz4YL5UIB-9O1DegSX4zhmP5hfWdftjpAeFHfkeuR8rHTtlgTnAhzkxlpR_-liWQAPDZWbYoZROUfBZCRjXeNE2OCYhualFwKrmchCSf4GG5-Mh03TE35lGBeZZGipyVuIDD15wq8uo4bR0EJOQCgB6RrzxNSj4Rm6M4n8QzMXschysCXyNqqanSRgcWJXjgnUqlyhEDrogad_cLRL0ClVBiLS6sf2aSOBIuey8RBOdrqQOpbyk-OU2DTuZPwVqRdxssKF6v7mr65b3GCMGn7s'
 
 def error(message, code):
-    return render_template("error.html", message=message, code=code)
+    return render_template("error.html", message = message, code = code)
 
 def success(message):
-    return render_template("success.html", message=message)
+    return render_template("success.html", message = message)
 
 def number_validity(number):
-    phone_number = NepaliPhoneNumber(english_number_input=number)
+    phone_number = NepaliPhoneNumber(english_number_input = number)
     carrier = phone_number.get_number_detail()["network_provider"]
     return (phone_number.is_valid_number(), carrier)
 
@@ -80,12 +81,18 @@ def login_required(f):
     """
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if session.get("user_id") is None and session.get("emp_id") is None:
+        if session.get("member_id") is None and session.get("admin_id") is None and session.get("staff_id") is None and session.get("std_id") is None:
             return redirect("/login")
         return f(*args, **kwargs)
     return decorated_function
 
+def has_expired(date):
+    return date < date.today()
 
 def npr(value):
     """Format Values for Nepalese Rupees."""
     return f"Rs.{value:,.2f}"
+
+def TrunDecimal(value):
+    """Format Values for Nepalese Rupees."""
+    return f"{value:,.2f}"

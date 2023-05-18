@@ -9,13 +9,13 @@
     <link rel="stylesheet" type="text/css" href="/static/style.css">
     <script type="text/javascript" src="static/jscripts.js"></script>
     <title>{% block title %}{% endblock %}| Chandra Jyoti School</title>
-    <link rel="icon" type="image/x-icon" href="/static/cj-school-icon.png">
+    <link rel="icon" type="image/x-icon" href="/static/images/cj-school-icon.png">
     {% endblock %}
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand" href="/"><img src="/static/cjs-logo.png" alt="" width="100" height="auto" class="d-inline-block align-text-top"></a>
+          <a class="navbar-brand" href="/"><img src="/static/images/cjs-logo.png" alt="" width="100" height="auto" class="d-inline-block align-text-top"></a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -36,26 +36,59 @@
               </a>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#">News & Stories</a></li>
-                <li><a class="dropdown-item" href="#">Our Teams</a></li>
+                <li><a class="dropdown-item" href="/our-teams">Our Teams</a></li>
+                <li><a class="dropdown-item" href="#">Events</a></li>
               </ul>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/careers">Careers</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="/admission-form">Admissions</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="/about-us">About Us</a>
             </li>
             </ul>
-            <div class="dropdown dropdown-center">
-                <button class="btn dropbtn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Sign in
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="/login">Sign in</a></li>
-                  <li><a class="dropdown-item" href="#">Register</a></li>
-                  <li><a class="dropdown-item" href="#">Help</a></li>
-                </ul>
-            </div>
+                {% if session["member_id"] %}
+                  <div class="dropdown profile-dropdown">
+                    <button onclick="myFunction()" class="dropbtn"><img src="static/image_profile/img{{ session['member_id'] }}.jpg" class="rounded-circle" height="30px">&nbsp;&nbsp;Profile</button>
+                    <div id="myDropdown" class="dropdown-content">
+                      <a class="border-bottom" href="/profile">{{ username }}</a>
+                      <a class="border-bottom" href="/dashboard">Dashboard</a>
+                      <a class="border-bottom" href="#" data-bs-toggle="modal" data-bs-target="#passwordModal" data-bs-whatever="@getbootstrap">Change Password</a>
+                      <a class="border-bottom" href="/logout">Log Out</a>
+                    </div>
+                  </div>
+                {% elif session["staff_id"] %}
+                <div class="dropdown profile-dropdown">
+                  <button onclick="myFunction()" class="dropbtn"><img src="/static/images/person-circle-white.svg" height="30px">&nbsp;&nbsp;Profile</button>
+                  <div id="myDropdown" class="dropdown-content">
+                    <a class="border-bottom" href="/profile">{{ username }}</a>
+                    <a class="border-bottom" href="/dashboard">Dashboard</a>
+                    <a class="border-bottom" href="#" data-bs-toggle="modal" data-bs-target="#passwordModal" data-bs-whatever="@getbootstrap">Change Password</a>
+                    <a class="border-bottom" href="/logout">Log Out</a>
+                  </div>
+                </div>
+                {% elif session["student_id"] %}
+                <div class="dropdown profile-dropdown">
+                  <button onclick="myFunction()" class="dropbtn"><img src="/static/images/person-circle-white.svg" height="30px">&nbsp;&nbsp;Profile</button>
+                  <div id="myDropdown" class="dropdown-content">
+                    <a class="border-bottom" href="/profile">{{ username }}</a>
+                    <a class="border-bottom" href="/dashboard">Dashboard</a>
+                    <a class="border-bottom" href="#" data-bs-toggle="modal" data-bs-target="#passwordModal" data-bs-whatever="@getbootstrap">Change Password</a>
+                    <a class="border-bottom" href="/logout">Log Out</a>
+                  </div>
+                </div>
+                {% else %}
+                <div class="dropdown profile-dropdown">
+                    <button onclick="myFunction()" class="dropbtn">Sign In</button>
+                    <div id="myDropdown" class="dropdown-content">
+                      <a class="border-bottom" href="/login">Sign in</a>
+                      <a class="border-bottom" href="#">Need Help?</a>
+                    </div>
+                  </div>
+                {% endif %}
           </div>
         </div>
       </nav>
@@ -68,13 +101,13 @@
           <div class="col-sm-4 mb-3 mb-sm-0" style="text-align: center; padding-inline: 20px;">
             <h5>Reach Us</h5>
             <div class="mb-2">
-              <img src="/static/email.png" alt="" height="25px"> <a href="mailto:chandrajyotiebs@gmail.com" style="text-decoration: none; color: white;">chandrajyotiebs@gmail.com</a> <br>
+              <img src="/static/images/email.png" alt="" height="25px"> <a href="mailto:chandrajyotiebs@gmail.com" style="text-decoration: none; color: white;">chandrajyotiebs@gmail.com</a> <br>
             </div>
             <div class="mb-2">
-              <img src="/static/phone.png" alt="" height="25px">+977-9861171968 <br>
+              <img src="/static/images/phone.png" alt="" height="25px">+977-9861171968 <br>
             </div>
             <div class="mb-2">
-              <img src="/static/location.png" alt="" height="25px"> Tinpatan 4, Sindhuli, Nepal
+              <img src="/static/images/location.png" alt="" height="25px"> Tinpatan 4, Sindhuli, Nepal
             </div>
           </div>
           <!--Column Third-->
@@ -96,11 +129,11 @@
               <label><h5>Connect With Us</h5></label>
                 <!--Social media icon inline flex-->
               <ul>
-                <li><a href="https://www.facebook.com/chandrajyotiebs"><img src="/static/facebook.png" alt="Facebook" height="25px"></a></li>
-                <li><a href="#"><img src="/static/twitter.png" alt="Twitter" height="25px"></a></li>
-                <li><a href="#"><img src="/static/instagram.png" alt="Instagram" height="25px"></a></li>
-                <li><a href="#"><img src="/static/youtube.png" alt="Youtube" height="25px"></a></li>
-                <li><a href="#"><img src="/static/tiktok.png" alt="TikTok" height="25px"></a></li>
+                <li><a href="https://www.facebook.com/chandrajyotiebs"><img src="/static/images/facebook.png" alt="Facebook" height="25px"></a></li>
+                <li><a href="#"><img src="/static/images/twitter.png" alt="Twitter" height="25px"></a></li>
+                <li><a href="#"><img src="/static/images/instagram.png" alt="Instagram" height="25px"></a></li>
+                <li><a href="#"><img src="/static/images/youtube.png" alt="Youtube" height="25px"></a></li>
+                <li><a href="#"><img src="/static/images/tiktok.png" alt="TikTok" height="25px"></a></li>
               </ul>
             </div>
           </div>

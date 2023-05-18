@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block title %}
+About Us
+{% endblock %}
+
+{% block body %}
+<style>
+  main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  section {
+    margin: 50px 0;
+  }
+  
+  h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  input,
+  textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  input[type="submit"] {
+    background-color: #d23228;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #a50c30;
+  }
+</style>
+<main>
+    <section id="contact">
+        <h2 class="text-center">Change Password</h2>
+        <form action="/change-pwd" method="post">
+            <label for="name">Current Password:</label>
+            <input type="password" id="name" name="current_pwd" required>
+    
+            <label for="new_pwd">New Password:</label>
+            <input type="text" id="new_pwd" name="new_pwd" required>
+    
+            <label for="message">Confirm New Password:</label>
+            <input id="message" name="confirm_pwd" required>
+    
+            <input type="submit" value="Submit">
+        </form>
+    </section>
+</main>
+{% endblock %}

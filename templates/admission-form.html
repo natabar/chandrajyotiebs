@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block body %}
+<div class="container-sm">
+    <h1>Pre-registration Form</h1>
+    <p>Chandrajyoti English Boarding School Sindhuli offers the best of both academics and extra carricular activities in a peaceful and harmonious learning environment for our students.</p>
+    Admissions is open for session 2080 BS and is
+ FREE for Limited time period! <br>
+You can visit us Sunday to Friday (10:00 am to 4:00 pm) for admissions.
+You can also inbox us for queries!
+
+    <hr class="border border-danger border-1 opacity-50">
+
+    <form class="row g-3" action="/admission-form" method="post">
+        <div class="col-md-6">
+            <label class="form-label">Student's Name<r class="required-field"> *</r></label>
+            <input name="full_name" type="text" class="form-control" required>
+        </div>
+        <div class="col-md-5">
+            <label class="form-label">Student's Name in Devnagari<r class="required-field"> *</r></label>
+            <input name="full_name_nepali" type="text" class="form-control" required>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Date of Birth<r class="required-field"> *</r></label>
+          <input name = "dob" type="date" class="form-control" required>
+        </div>
+        <div class="col-md-4" style="padding-inline: 1%;">
+            <label class="form-label">Intended admission class:&nbsp;</label>
+            <select class="form-select" name="grade">
+                <option selected value="Nursery">Nursery</option>
+                <option value="L.K.G">L.K.G</option>
+                <option value="U.K.G">U.K.G</option>
+                <option value="Grade 1">Grade 1</option>
+                <option value="Grade 2">Grade 2</option>
+                <option value="Grade 3">Grade 3</option>
+                <option value="Grade 4">Grade 4</option>
+                <option value="Grade 5">Grade 5</option>
+            </select>
+        </div>
+        <div class="col-md-4" style="padding-left: 1%;">
+            <label class="form-label">Gender<r class="required-field"> *</r></label><br>
+            <input type="radio" id="male" name="gender" value="male" required> Male 
+            <input type="radio" id="female" name="gender" value="female" required> Female
+        </div>
+        <!--For Student's father and Mother-->
+        <div class="col-md-6">
+            <label class="form-label">Father's Name<r class="required-field"> *</r></label>
+            <input name="father_name" type="text" class="form-control" required>
+        </div>
+        <div class="col-md-5">
+            <label class="form-label">Father's Mobile Number</label>
+            <input name="father_mobile" type="text" class="form-control">
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Mother's Name<r class="required-field"> *</r></label>
+            <input name="mother_name" type="text" class="form-control" required>
+        </div>
+
+        <div class="col-md-5">
+            <label class="form-label">Mother's Mobile Number</label>
+            <input name="mother_mobile" type="text" class="form-control">
+        </div>
+        <!---->
+
+        <div class="col-md-11">
+            <label for="inputAddress" class="form-label">Address<r class="required-field"> *</r></label>
+            <input name="p_address" type="text" class="form-control" id="inputAddress" placeholder="Tinpatan 11, Chakmake, Sindhuli" required>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Guardian's Name<r class="required-field"> *</r></label>
+            <input name="guardian_name" type="text" class="form-control" required>
+        </div>
+
+        <div class="col-md-5">
+            <label class="form-label">Guardian's Mobile Number<r class="required-field"> *</r></label>
+            <input name="guardian_mobile" type="text" class="form-control" required>
+        </div>
+          <!--For guardians other than Father/Mother-->
+        <div class="col-md-6">
+            <label class="form-label">Guardian relationship with student<r class="required-field"> *</r></label>
+            <input name="guardian_relation" type="text" class="form-control" required>
+        </div>
+          <!------------------>
+
+          <div class="col-md-11">
+            <div class="form-check">
+              <input class="form-check-input is-invalid" type="checkbox" id="invalidCheck3" aria-describedby="invalidCheck3Feedback" required>
+              <label class="form-check-label" for="invalidCheck3">
+                I Agree the <a href="/terms-and-conditions" style="color: brown;">terms and conditions</a>
+              </label>
+              <div id="invalidCheck3Feedback" class="invalid-feedback">
+                You must agree before submitting.
+              </div>
+            </div>
+          </div>
+        <div class="mb-3">
+            <button class="btn btn-danger" type="submit">Submit</button>
+        </div>
+
+      </form>
+</div>
+{% endblock %}
