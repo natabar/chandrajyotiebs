@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{ notice.title }}
+{% endblock %}
+
+{% block body %}
+<div style="background-color: white; margin-inline: 3%;">
+    <div class="card mb-3">
+        {% if notice.filepath %}
+        <img src="{{notice.filepath}}">
+        {% else %}
+        <img src="/static/images/news-update.jpg">
+        {% endif %}
+        <div class="card-body">
+          <h4 class="card-title">{{notice.title}}</h4>
+          <p class="card-text">{{notice.content}}</p>
+          <p class="card-text"><small class="text-body-secondary">published on {{notice.date_published}}</small></p>
+        </div>
+      </div>
+</div>
+{% endblock %}

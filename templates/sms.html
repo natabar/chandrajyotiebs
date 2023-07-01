@@ -1,0 +1,481 @@
+{% extends "admin-layout.html" %}
+
+{% block title %}
+Admin SMS
+{% endblock %}
+
+{% block body %}
+
+<div class="row">
+  <div class="col-sm-6 hidden" style="padding: 1%;">
+    <div class="card">
+      <div class="card-body">
+        <form action="/bulk_sms" method="post">
+          <div class="mb-3" style="padding-inline: 1%;">
+            <select class="form-select" name="audience_type" id="audience_type">
+                <option selected>Select</option>
+                <option value="mat-student">Student</option>
+                <option value="mat-guardian">Guardian</option>
+                <option value="mat-staff">Staff</option>
+                <option value="mat-bod">BOD member</option>
+            </select>
+         </div>
+    
+        <div class="boxx" id="mat-student">
+          <div class="mb-3">
+            <div id="myRadioGroup">
+              <div class="form-check form-check-inline">
+              <input type="radio" name="alert" value="1" checked="checked"/>
+              <label class="form-check-label" for="inlineRadio1">Custom Message</label>
+              </div>
+              <div class="form-check form-check-inline">
+              <input type="radio" name="alert" value="2" />
+              <label class="form-check-label" for="inlineRadio2">Exam Schedule</label>
+              </div>
+                <div class="form-check form-check-inline">
+                  <input type="radio" name="alert" value="3" />
+                  <label class="form-check-label" for="inlineRadio2">Holiday</label>
+                </div>
+            
+              <div id="Cars1" class="desc">
+                <label class="form-label">Message<r class="required-field"> *</r></label>
+                <textarea name="content" id="content" rows="4" class="form-control" placeholder="Custom Message"></textarea>
+              </div>
+              <div id="Cars2" class="desc" style="display: none;">
+                <label class="form-label">Message<r class="required-field"> *</r></label>
+                <textarea name="content" id="content" rows="4" class="form-control">{{ sms_syntax[0][3] }}</textarea>
+              </div>
+            <div id="Cars3" class="desc" style="display: none;">
+              <label class="form-label">Message<r class="required-field"> *</r></label>
+                <textarea name="content" id="content" rows="4" class="form-control">{{ sms_syntax[6][3] }}</textarea>
+          </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="boxx" id="mat-guardian">
+          <div class="mb-3">
+            <div id="myRadioGroup">
+              <div class="form-check form-check-inline">
+              <input type="radio" name="alert_guardian" value="1" checked="checked"/>
+              <label class="form-check-label" for="inlineRadio1">Custom Message</label>
+              </div>
+              <div class="form-check form-check-inline">
+              <input type="radio" name="alert_guardian" value="2" />
+              <label class="form-check-label" for="inlineRadio2">Grade Result Alert</label>
+              </div>
+                <div class="form-check form-check-inline">
+                  <input type="radio" name="alert_guardian" value="3" />
+                  <label class="form-check-label" for="inlineRadio2">Holiday Alert</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input type="radio" name="alert_guardian" value="4" />
+                    <label class="form-check-label" for="inlineRadio2">Vacation Alert</label>
+                    </div>
+            
+              <div id="Guardian1" class="msg_box_guardian">
+                <label class="form-label">Message<r class="required-field"> *</r></label>
+                <textarea name="content" id="content" rows="4" class="form-control" placeholder="Custom Message..."></textarea>
+              </div>
+              <div id="Guardian2" class="msg_box_guardian" style="display: none;">
+                <label class="form-label">Message<r class="required-field"> *</r></label>
+                <textarea name="content" id="content" rows="4" class="form-control">{{ sms_syntax[2][3] }}</textarea>
+              </div>
+              <div id="Guardian3" class="msg_box_guardian" style="display: none;">
+                <label class="form-label">Message<r class="required-field"> *</r></label>
+                <textarea name="content" id="content" rows="4" class="form-control">{{ sms_syntax[6][3] }}</textarea>
+              </div>
+              <div id="Guardian4" class="msg_box_guardian" style="display: none;">
+                <label class="form-label">Message<r class="required-field"> *</r></label>
+                <textarea name="content" id="content" rows="4" class="form-control">{{ sms_syntax[9][3] }}</textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="boxx" id="mat-staff">
+          <div class="mb-3">
+            <div id="myRadioGroup">
+              <div class="form-check form-check-inline">
+              <input type="radio" name="alert_staff" value="1" checked="checked"/>
+              <label class="form-check-label" for="inlineRadio1">Custom Message</label>
+              </div>
+              <div class="form-check form-check-inline">
+              <input type="radio" name="alert_staff" value="2" />
+              <label class="form-check-label" for="inlineRadio2">Meeting Alert</label>
+              </div>
+            
+              <div id="Staff1" class="msg_box_staff">
+                <label class="form-label">Message<r class="required-field"> *</r></label>
+                <textarea name="content" id="content" rows="4" class="form-control" placeholder="Write message here..."></textarea>
+              </div>
+              <div id="Staff2" class="msg_box_staff" style="display: none;">
+                <label class="form-label">Message<r class="required-field"> *</r></label>
+                <textarea name="content" id="content" rows="4" class="form-control">{{ sms_syntax[10][3] }}</textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="boxx" id="mat-bod">
+          <div class="mb-3">
+            <div id="myRadioGroup">
+              <div class="form-check form-check-inline">
+              <input type="radio" name="alert_bod" value="1" checked="checked"/>
+              <label class="form-check-label" for="inlineRadio1">Custom Message</label>
+              </div>
+              <div class="form-check form-check-inline">
+              <input type="radio" name="alert_bod" value="2" />
+              <label class="form-check-label" for="inlineRadio2">Meeting Alert</label>
+              </div>
+            
+              <div id="Bod1" class="msg_box_bod">
+                <label class="form-label">Message<r class="required-field"> *</r></label>
+                <textarea name="content" id="content" rows="4" class="form-control" placeholder="Custom Message..."></textarea>
+              </div>
+              <div id="Bod2" class="msg_box_bod" style="display: none;">
+                <label class="form-label">Message<r class="required-field"> *</r></label>
+                <textarea name="content" id="content" rows="4" class="form-control">{{ sms_syntax[11][3] }}</textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <input type="submit" class="button" id="button" value="Submit">
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-sm-6" style="padding: 1%;">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title text-center">Send Absent Alert</h5>
+          <div class="mb-3" style="padding-inline: 1%;">
+            <select class="form-select" name="grade-student" id="grade-student">
+                <option selected>Select</option>
+                <option value="grade-nursery">Nursery</option>
+                <option value="grade-LKG">L.K.G</option>
+                <option value="grade-UKG">U.K.G</option>
+                <option value="grade-1">Grade 1</option>
+                <option value="grade-2">Grade 2</option>
+                <option value="grade-3">Grade 3</option>
+                <option value="grade-4">Grade 4</option>
+                <option value="grade-5">Grade 5</option>
+            </select>
+         </div>
+    
+        <div class="boxx" id="grade-nursery">
+          <form action="/single_sms" method="post">
+            <div style="display: none;">
+              <input type="text" name="grade-student" value="grade_nursery">
+            </div>
+          <div class="mb-3">
+            <input name="student_info" class="form-control" list="datalistOptionsnursery" id="exampleDataListnursery" placeholder="Type student name to search...">
+            <datalist id="datalistOptionsnursery">
+              {% for row in std_nursery %}
+              <option value="{{ row[0] }} : {{ row[1] }} from {{ row[5] }}">
+              {% endfor %}
+            </datalist>
+          </div>
+          <div class="mb-3">
+            <label for="message">Message:</label>
+            <textarea class="form-control" rows="4" id="message" name="message" required readonly>Dear Guardian, records show that {student_name} is absent today {date} for unknown reason. Please call 9828113595 for details. -CJ_School</textarea>
+          </div>
+          <div class="mb-3">
+            <input type="submit" class="button" id="button" value="Send">
+          </div>
+        </form>
+        </div>
+
+        <div class="boxx" id="grade-LKG">
+          <form action="/single_sms" method="post">
+            <div style="display: none;">
+              <input type="text" name="grade-student" value="grade_LKG">
+            </div>
+          <div class="mb-3">
+            <input name="student_info" class="form-control" list="datalistOptionslkg" id="exampleDataListlkg" placeholder="Type student name to search...">
+            <datalist id="datalistOptionslkg">
+              {% for row in std_LKG %}
+              <option value="{{ row[0] }} : {{ row[1] }} from {{ row[5] }}">
+              {% endfor %}
+            </datalist>
+          </div>
+          <div class="mb-3">
+            <label for="message">Message:</label>
+            <textarea class="form-control" rows="4" id="message" name="message" required readonly>Dear Guardian, records show that {student_name} is absent today {date} for unknown reason. Please call 9828113595 for details. -CJ_School</textarea>
+          </div>
+          <div class="mb-3">
+            <input type="submit" class="button" id="button" value="Send">
+          </div>
+        </form>
+        </div>
+
+        <div class="boxx" id="grade-UKG">
+          <form action="/single_sms" method="post">
+            <div style="display: none;">
+              <input type="text" name="grade-student" value="grade_UKG">
+            </div>
+          <div class="mb-3">
+            <input name="student_info" class="form-control" list="datalistOptionsukg" id="exampleDataListukg" placeholder="Type student name to search...">
+            <datalist id="datalistOptionsukg">
+              {% for row in std_UKG %}
+              <option value="{{ row[0] }} : {{ row[1] }} from {{ row[5] }}">
+              {% endfor %}
+            </datalist>
+          </div>
+          <div class="mb-3">
+            <label for="message">Message:</label>
+            <textarea class="form-control" rows="4" id="message" name="message" required readonly>Dear Guardian, records show that {student_name} is absent today {date} for unknown reason. Please call 9828113595 for details. -CJ_School</textarea>
+          </div>
+          <div class="mb-3">
+            <input type="submit" class="button" id="button" value="Send">
+          </div>
+        </form>
+        </div>
+        <div class="boxx" id="grade-1">
+          <form action="/single_sms" method="post">
+            <div style="display: none;">
+              <input type="text" name="grade-student" value="grade_1">
+            </div>
+          <div class="mb-3">
+            <input name="student_info" class="form-control" list="datalistOptions1" id="exampleDataList1" placeholder="Type student name to search...">
+            <datalist id="datalistOptions1">
+              {% for row in std_1 %}
+              <option value="{{ row[0] }} : {{ row[1] }} from {{ row[5] }}">
+              {% endfor %}
+            </datalist>
+          </div>
+          <div class="mb-3">
+            <label for="message">Message:</label>
+            <textarea class="form-control" rows="4" id="message" name="message" required readonly>Dear Guardian, records show that {student_name} is absent today {date} for unknown reason. Please call 9828113595 for details. -CJ_School</textarea>
+          </div>
+          <div class="mb-3">
+            <input type="submit" class="button" id="button" value="Send">
+          </div>
+        </form>
+        </div>
+        <div class="boxx" id="grade-2">
+          <form action="/single_sms" method="post">
+            <div style="display: none;">
+              <input type="text" name="grade-student" value="grade_2">
+            </div>
+          <div class="mb-3">
+            <input name="student_info" class="form-control" list="datalistOptions2" id="exampleDataList2" placeholder="Type student name to search...">
+            <datalist id="datalistOptions2">
+              {% for row in std_2 %}
+              <option value="{{ row[0] }} : {{ row[1] }} from {{ row[5] }}">
+              {% endfor %}
+            </datalist>
+          </div>
+          <div class="mb-3">
+            <label for="message">Message:</label>
+            <textarea class="form-control" rows="4" id="message" name="message" required readonly>Dear Guardian, records show that {student_name} is absent today {date} for unknown reason. Please call 9828113595 for details. -CJ_School</textarea>
+          </div>
+          <div class="mb-3">
+            <input type="submit" class="button" id="button" value="Send">
+          </div>
+        </form>
+        </div>
+        <div class="boxx" id="grade-3">
+          <form action="/single_sms" method="post">
+            <div style="display: none;">
+              <input type="text" name="grade-student" value="grade_3">
+            </div>
+          <div class="mb-3">
+            <input name="student_info" class="form-control" list="datalistOptions3" id="exampleDataList3" placeholder="Type student name to search...">
+            <datalist id="datalistOptions3">
+              {% for row in std_3 %}
+              <option value="{{ row[0] }} : {{ row[1] }} from {{ row[5] }}">
+              {% endfor %}
+            </datalist>
+          </div>
+          <div class="mb-3">
+            <label for="message">Message:</label>
+            <textarea class="form-control" rows="4" id="message" name="message" required readonly>Dear Guardian, records show that {student_name} is absent today {date} for unknown reason. Please call 9828113595 for details. -CJ_School</textarea>
+          </div>
+          <div class="mb-3">
+            <input type="submit" class="button" id="button" value="Send">
+          </div>
+        </form>
+        </div>
+        <div class="boxx" id="grade-4">
+          <form action="/single_sms" method="post">
+            <div style="display: none;">
+              <input type="text" name="grade-student" value="grade_4">
+            </div>
+          <div class="mb-3">
+            <input name="student_info" class="form-control" list="datalistOptions4" id="exampleDataList4" placeholder="Type student name to search...">
+            <datalist id="datalistOptions4">
+              {% for row in std_4 %}
+              <option value="{{ row[0] }} : {{ row[1] }} from {{ row[5] }}">
+              {% endfor %}
+            </datalist>
+          </div>
+          <div class="mb-3">
+            <label for="message">Message:</label>
+            <textarea class="form-control" rows="4" id="message" name="message" required readonly>Dear Guardian, records show that {student_name} is absent today {date} for unknown reason. Please call 9828113595 for details. -CJ_School</textarea>
+          </div>
+          <div class="mb-3">
+            <input type="submit" class="button" id="button" value="Send">
+          </div>
+        </form>
+        </div>
+        <div class="boxx" id="grade-5">
+          <form action="/single_sms" method="post">
+            <div style="display: none;">
+              <input type="text" name="grade-student" value="grade_5">
+            </div>
+          <div class="mb-3">
+            <input name="student_info" class="form-control" list="datalistOptions5" id="exampleDataList5" placeholder="Type student name to search...">
+            <datalist id="datalistOptions5">
+              {% for row in std_5 %}
+              <option value="{{ row[0] }} : {{ row[1] }} from {{ row[5] }}">
+              {% endfor %}
+            </datalist>
+          </div>
+          <div class="mb-3">
+            <label for="message">Message:</label>
+            <textarea class="form-control" rows="4" id="message" name="message" required readonly>Dear Guardian, records show that {student_name} is absent today {date} for unknown reason. Please call 9828113595 for details. -CJ_School</textarea>
+          </div>
+          <div class="mb-3">
+            <input type="submit" class="button" id="button" value="Send">
+          </div>
+        </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6" style="padding: 1%;">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title text-center">Send Text Message</h5>
+        <form action="/bulk_sms" method="post">
+          <div class="mb-3" style="padding-inline: 1%;">
+            <label for="audience_type">Select Recipients</label>
+            <select class="form-select" name="audience_type" id="audience_type">
+                <option selected>Select</option>
+                <option value="staff">Staff</option>
+                <option value="bod">BOD member</option>
+            </select>
+         </div>
+          <div class="mb-3">
+            <div class="col-md-12" style="padding-right: 1%;">
+              <label class="form-label">Message<r class="required-field"> *</r></label>
+              <textarea name="content" id="content" rows="4" class="form-control" placeholder="Message..."></textarea>
+            </div>
+          </div>
+        
+        <div class="mb-3">
+          <input type="submit" class="button" id="button" value="Submit">
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 hidden" style="padding: 1%;">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title text-center">Send Custom Alert</h5>
+        <form action="/absent_alert" method="post">
+          <div class="mb-3" style="padding-inline: 1%;">
+            <label for="exampleDataList" class="form-label">Mobile</label>
+            <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="98XXXXXXXX">
+         </div>
+          <div class="mb-3">
+            <div class="col-md-12" style="padding-right: 1%;">
+              <label class="form-label">Message<r class="required-field"> *</r></label>
+              <textarea name="message" id="message" rows="4" class="form-control" placeholder="Message..."></textarea>
+            </div>
+          </div>
+        
+        <div class="mb-3">
+          <input type="submit" class="button" id="button" value="Submit">
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  $(document).ready(function(){
+  $("select[name*='audience_type']").change(function(){
+    select_changed();
+  });
+  select_changed() //here you can invoke your function on page ready
+});
+
+function select_changed(){
+  $("div[id*='mat-']").each(function(){
+    $(this).removeClass('selected');
+  });
+  $("select[name*='audience_type']").each(function(){
+     var selected = $(this).val();
+     $('#'+selected).addClass('selected');
+  });
+}
+
+
+$(document).ready(function(){
+  $("select[name*='grade-student']").change(function(){
+    select_changed1();
+  });
+  select_changed1() //here you can invoke your function on page ready
+});
+
+function select_changed1(){
+  $("div[id*='grade-']").each(function(){
+    $(this).removeClass('selected');
+  });
+  $("select[name*='grade-student']").each(function(){
+     var selected = $(this).val();
+     $('#'+selected).addClass('selected');
+  });
+}
+
+//function for student alert selection
+$(document).ready(function() {
+    $("input[name$='alert']").click(function() {
+        var test = $(this).val();
+
+        $("div.desc").hide();
+        $("#Cars" + test).show();
+    });
+});
+
+//function for guardian alert selection
+$(document).ready(function() {
+    $("input[name$='alert_guardian']").click(function() {
+        var test = $(this).val();
+
+        $("div.msg_box_guardian").hide();
+        $("#Guardian" + test).show();
+    });
+});
+
+//function for staff alert selection
+$(document).ready(function() {
+    $("input[name$='alert_staff']").click(function() {
+        var test = $(this).val();
+
+        $("div.msg_box_staff").hide();
+        $("#Staff" + test).show();
+    });
+});
+
+//function for bod alert selection
+$(document).ready(function() {
+    $("input[name$='alert_bod']").click(function() {
+        var test = $(this).val();
+
+        $("div.msg_box_bod").hide();
+        $("#Bod" + test).show();
+    });
+});
+</script>
+{% endblock %}

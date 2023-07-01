@@ -7,9 +7,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/evo-calendar.midnight-blue.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/evo-calendar.min.css">
     <script type="text/javascript" src="static/jscripts.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <title>{% block title %}{% endblock %}| Chandra Jyoti School</title>
     <link rel="icon" type="image/x-icon" href="/static/images/cj-school-icon.png">
+    <meta name="description" content="Welcome to Chandrajyoti English Boarding School Sindhuli, a leading educational institution in Nepal. We are committed to providing quality education that fosters academic excellence, character development, and lifelong learning.">
+    <meta name="keywords" content="School, Chandrajyoti English Boarding School Sindhuli, Education in Nepal, Best school in Sindhuli, Academic excellence, Character development, Lifelong learning, Comprehensive curriculum, Experienced faculty, State-of-the-art facilities, Leading educational institution">
+    <meta name="Chandrajyoti School" content="Chandrajyoti English Boarding School Sindhuli">
     {% endblock %}
 </head>
 <body>
@@ -25,17 +31,14 @@
                 <a class="nav-link" href="/">Home</a>
               </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Features</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Gallery</a>
+              <a class="nav-link" href="/newsandupdates">News & Stories</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Explore
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">News & Stories</a></li>
+                <li><a class="dropdown-item" href="#">Gallery</a></li>
                 <li><a class="dropdown-item" href="/our-teams">Our Teams</a></li>
                 <li><a class="dropdown-item" href="#">Events</a></li>
               </ul>
@@ -44,7 +47,7 @@
               <a class="nav-link" href="/careers">Careers</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/admission-form">Admissions</a>
+              <a class="nav-link" href="/calendar">Calendar</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/about-us">About Us</a>
@@ -76,6 +79,16 @@
                   <div id="myDropdown" class="dropdown-content">
                     <a class="border-bottom" href="/profile">{{ username }}</a>
                     <a class="border-bottom" href="/dashboard">Dashboard</a>
+                    <a class="border-bottom" href="#" data-bs-toggle="modal" data-bs-target="#passwordModal" data-bs-whatever="@getbootstrap">Change Password</a>
+                    <a class="border-bottom" href="/logout">Log Out</a>
+                  </div>
+                </div>
+                {% elif session["admin_id"] %}
+                <div class="dropdown profile-dropdown">
+                  <button onclick="myFunction()" class="dropbtn"><img src="/static/images/person-circle-white.svg" height="30px">&nbsp;&nbsp;Profile</button>
+                  <div id="myDropdown" class="dropdown-content">
+                    <a class="border-bottom" href="/profile">{{ username }}</a>
+                    <a class="border-bottom" href="/admin">Dashboard</a>
                     <a class="border-bottom" href="#" data-bs-toggle="modal" data-bs-target="#passwordModal" data-bs-whatever="@getbootstrap">Change Password</a>
                     <a class="border-bottom" href="/logout">Log Out</a>
                   </div>

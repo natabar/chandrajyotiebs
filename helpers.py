@@ -73,6 +73,32 @@ def SMS_sociair(mobile, message):
     except:
         return "Error: SMS service failed"
 
+def multiple_sms(list_mobile, message):
+    try:
+        url = 'https://sms.sociair.com/api/sms'
+        # Data to send in the request
+        payload = {
+                "message": message,
+                "mobile": list_mobile
+            }
+        headers = {
+            "Authorization": sociair_token,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+        # Post request to SMS API
+        response = requests.post(url, json=payload, headers=headers)
+
+        # check if the request was successful (status code 200)
+        if response.status_code == 200:
+            data = response.json()  # get the response data as a JSON object
+            return data["message"]
+        else:
+            data = response.json()
+            return data
+    except Exception as e:
+        return "Error: SMS service failed"
+
 def login_required(f):
     """
     Decorate routes to require login.
@@ -88,6 +114,11 @@ def login_required(f):
 
 def has_expired(date):
     return date < date.today()
+
+def convert_date(date_str):
+    date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+    formatted_date = date_obj.strftime('%B %d, %Y')
+    return formatted_date
 
 def npr(value):
     """Format Values for Nepalese Rupees."""

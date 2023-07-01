@@ -280,3 +280,26 @@ body
   .card-hover:hover {
     background-color: #f1f1f1;
   }
+
+  input[type="submit"] {
+    background-color: #d23228;
+    color: #fff;
+    border: none;
+    padding: 7px 16px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #a50c30;
+  }
+
+  .boxx{
+    display: none
+  }
+  .selected{
+      display: block;
+  }
+
+  

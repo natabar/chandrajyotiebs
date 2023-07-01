@@ -1,20 +1,21 @@
 from flask import Flask, render_template, redirect, url_for, jsonify, request, session
 from dotenv import load_dotenv
-import os
+import os, base64
 import secrets
 from flask_session import Session
-from dbmodule import insert_student_into_db, check_access_key, investor_account_exist, insert_director_into_db, access_key_into_db, transaction_info_into_db, destroyOTP
-from database import load_job_from_db, load_jobs_from_db
+from dbmodule import load_userdata_from_db, load_student_data_from_db, insert_student_into_db, AddEventToCalendar, check_access_key, investor_account_exist, insert_director_into_db, access_key_into_db, transaction_info_into_db, destroyOTP
+from database import load_job_from_db, load_jobs_from_db, load_notices_from_db, load_notice_from_db
 from memberdb import change_investor_pw, change_admin_pw
 from userdb import staff_account_exist, member_account_exist, student_account_exist, admin_account_exist, retrieve_user_data, retrieve_user_hash
-from helpers import error, success, login_required, number_validity, SMS_sociair, has_expired, npr, TrunDecimal
+from helpers import error, success, login_required, number_validity, SMS_sociair, multiple_sms, has_expired, npr, TrunDecimal, convert_date
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import date, datetime
 import mysql.connector as mysql
 from werkzeug.utils import secure_filename
 import urllib.request
-from blobdb import InsertBlob, retrieve_image_from_db
+from blobdb import InsertBlob, retrieve_image_from_db, InsertNotice
 import imghdr
+import json
 
 def configure():
     load_dotenv()
@@ -32,6 +33,8 @@ app.config["TEMPLATES_ATUO_RELOAD"] = True
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 @app.after_request
 def after_request(response):
@@ -242,7 +245,7 @@ def dashboard():
             cursor.execute("SELECT count(*) FROM staff")
             staff_count = cursor.fetchone()
 
-            cursor.execute("SELECT count(*) FROM student")
+            cursor.execute("SELECT (SELECT COUNT(*) FROM grade_nursery) + (SELECT COUNT(*) FROM grade_LKG) + (SELECT COUNT(*) FROM grade_UKG) + (SELECT COUNT(*) FROM grade_1) + (SELECT COUNT(*) FROM grade_2) + (SELECT COUNT(*) FROM grade_3) + (SELECT COUNT(*) FROM grade_4) + (SELECT COUNT(*) FROM grade_5) AS total_students_all_grades;")
             std_count = cursor.fetchone()
 
             connection.close()
@@ -293,7 +296,7 @@ def admin():
             cursor.execute("SELECT count(*) FROM staff")
             staff_count = cursor.fetchone()
 
-            cursor.execute("SELECT count(*) FROM student")
+            cursor.execute("SELECT (SELECT COUNT(*) FROM grade_nursery) + (SELECT COUNT(*) FROM grade_LKG) + (SELECT COUNT(*) FROM grade_UKG) + (SELECT COUNT(*) FROM grade_1) + (SELECT COUNT(*) FROM grade_2) + (SELECT COUNT(*) FROM grade_3) + (SELECT COUNT(*) FROM grade_4) + (SELECT COUNT(*) FROM grade_5) AS total_students_all_grades;")
             std_count = cursor.fetchone()
 
             connection.close()
@@ -308,8 +311,269 @@ def admin():
         return error(e, 404)
 
 
+# Admin Dashboard
+@app.route("/admin-sms")
+@login_required
+def admin_sms():
+    try:
+        connection = mysql.connect (
+            host = "23.106.53.56",
+            user = "chakmake_cjadmin",
+            password = "Maheshraj##123",
+            database = "chakmake_cjschool"
+        )
+        with connection.cursor() as cursor:
+            data_query = "SELECT * FROM admin WHERE admin_id = %s"
+            cursor.execute(data_query, (session["admin_id"],))
+            row = cursor.fetchone()
+
+            cursor.execute("SELECT count(*) FROM investors")
+            inv_count = cursor.fetchone()
+
+            cursor.execute("SELECT count(*) FROM staff")
+            staff_count = cursor.fetchone()
+
+            cursor.execute("SELECT count(*) FROM student")
+            std_count = cursor.fetchone()
+
+            cursor.execute("SELECT * FROM investors")
+            inv_all = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_nursery")
+            std_nursery = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_LKG")
+            std_LKG = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_UKG")
+            std_UKG = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_1")
+            std_1 = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_2")
+            std_2 = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_3")
+            std_3 = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_4")
+            std_4 = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_5")
+            std_5 = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM sms_syntax")
+            sms_syntax = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_nursery UNION SELECT * FROM grade_LKG UNION SELECT * FROM grade_UKG UNION SELECT * FROM grade_1 UNION SELECT * FROM grade_2 UNION SELECT * FROM grade_3 UNION SELECT * FROM grade_4 UNION SELECT * FROM grade_5")
+            std_all = cursor.fetchall()
+
+            connection.close()
+        template_data = {
+            'username' : row[1],
+            'inv_count' : inv_count[0],
+            'staff_count' : staff_count[0],
+            'std_count' : std_count[0],
+            'inv_all' : inv_all,
+            'std_nursery' : std_nursery,
+            'std_LKG' : std_LKG,
+            'std_UKG' : std_UKG,
+            'std_1' : std_1,
+            'std_2' : std_2,
+            'std_3' : std_3,
+            'std_4' : std_4,
+            'std_5' : std_5,
+            'sms_syntax' : sms_syntax,
+            'std_all' : std_all
+        }
+        return render_template("sms.html", **template_data)
+    except Exception as e:
+        return error(e, 404)
+
+# Send SMS to people
+@app.route("/bulk_sms", methods=["POST"])
+@login_required
+def bulk_sms():
+    if request.method == 'POST':
+        audience_type = request.form.get('audience_type')
+        message = request.form.get('content')
+        if not audience_type or not message:
+            return error("incomplete input provided!", 400)
+        user_data = load_userdata_from_db(audience_type)
+        return success(user_data)
+
+        # Convert numbers to strings
+        number_strings = [str(num) for num in user_data]
+
+        # Join the number strings with commas
+        numbers_csv = ', '.join(number_strings)
+
+        return success(numbers_csv)
+        # Test number line
+        response = multiple_sms(numbers_csv, message)
+        return success(response)
+
+# Send SMS to people
+@app.route("/single_sms", methods=["POST"])
+@login_required
+def single_sms():
+    if request.method == 'POST':
+        grade_level = request.form.get('grade-student')
+        student_info = request.form.get('student_info')
+        message = request.form.get('message')
+        if not grade_level or not student_info:
+            return error("incomplete input provided!", 400)
+        split_word = student_info.split()
+        std_id = int(split_word[0])
+        user_data = load_student_data_from_db(grade_level, std_id)
+        mobile = user_data[7]
+        student_name = user_data[1]
+        date_today = date.today()
+        message = f"Dear Guardian, records show that {student_name} is absent today {date_today} for unknown reason. Please call 9828113595 for details. - CJ_School"
+
+        # Test number line
+        response = SMS_sociair(mobile, message)
+        return success(response)
+    else:
+        return error("Unauthorized Access attempt", 400)
+
+# Management Admin Dashboard
+@app.route("/management")
+@login_required
+def admin_manage():
+    try:
+        connection = mysql.connect (
+            host = "23.106.53.56",
+            user = "chakmake_cjadmin",
+            password = "Maheshraj##123",
+            database = "chakmake_cjschool"
+        )
+        with connection.cursor() as cursor:
+            data_query = "SELECT * FROM admin WHERE admin_id = %s"
+            cursor.execute(data_query, (session["admin_id"],))
+            row = cursor.fetchone()
+
+            cursor.execute("SELECT * FROM investors")
+            inv_all = cursor.fetchall()
+
+            connection.close()
+            template_data = {
+                'username' : row[1],
+                'inv_all' : inv_all
+            }
+            return render_template("management.html", **template_data)
+    except Exception as e:
+        return error(e, 404)
+
+# Admin attendance
+@app.route("/admin-attendance")
+@login_required
+def admin_attendance():
+    try:
+        connection = mysql.connect (
+            host = "23.106.53.56",
+            user = "chakmake_cjadmin",
+            password = "Maheshraj##123",
+            database = "chakmake_cjschool"
+        )
+        with connection.cursor() as cursor:
+            data_query = "SELECT * FROM admin WHERE admin_id = %s"
+            cursor.execute(data_query, (session["admin_id"],))
+            row = cursor.fetchone()
+
+            cursor.execute("SELECT * FROM investors")
+            inv_all = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_nursery UNION SELECT * FROM grade_LKG UNION SELECT * FROM grade_UKG UNION SELECT * FROM grade_1 UNION SELECT * FROM grade_2 UNION SELECT * FROM grade_3 UNION SELECT * FROM grade_4 UNION SELECT * FROM grade_5")
+            std_all = cursor.fetchall()
+
+            connection.close()
+            template_data = {
+                'username' : row[1],
+                'inv_all' : inv_all,
+                'std_all' : std_all
+            }
+            return render_template("attendance.html", **template_data)
+    except Exception as e:
+        return error(e, 404)
+
+
+# Calendar
+@app.route("/calendar")
+def calendar():
+    try:
+        connection = mysql.connect (
+            host = "23.106.53.56",
+            user = "chakmake_cjadmin",
+            password = "Maheshraj##123",
+            database = "chakmake_cjschool"
+        )
+        with connection.cursor() as cursor:
+            data_query = "SELECT * FROM calendar_events"
+            cursor.execute(data_query)
+            events = cursor.fetchall()
+            event_list = []
+            for event in events:
+                if event[6] == None:
+                    event_dict = {
+                    'id': event[0],
+                    'title': event[1],
+                    'description': event[2],
+                    'type': event[3],
+                    'date': event[4],
+                    'everyYear': event[5],
+                    'color': event[7]
+                }
+                else:
+                    event_dict = {
+                        'id': event[0],
+                        'title': event[1],
+                        'description': event[2],
+                        'type': event[3],
+                        'date': convert_date(str(event[4])),
+                        'end_date': convert_date(str(event[6])),
+                        'everyYear': event[5],
+                        'color': event[7]
+                    }
+                event_list.append(event_dict)
+        return render_template("calendar.html", events = event_list)
+    except:
+        return render_template("calendar.html")
+
+# Add event to calendar
+@app.route("/add_event", methods = ["POST"])
+@login_required
+def add_event():
+    if request.method == "POST":
+        event_title = request.form.get("event_title")
+        description = request.form.get("description")
+        event_type = request.form.get("event_type")
+        event_date = request.form.get("event_date")
+        end_date = request.form.get("end_date")
+        everyYear = request.form.get("everyYear")
+        if not event_title or not description or not event_type or not event_date or not everyYear:
+            return error("Incomplete form submitted!", 400)
+        else:
+            if event_type == "holiday":
+                color = "#a50c30"
+            elif event_type == "exam_schedule":
+                color = "green"
+            elif event_type == "extra_curricular":
+                color = "blue"
+            else:
+                color = "#f77777"
+            data = (event_title, description, event_type, event_date, everyYear, end_date, color)
+            EventAdded = AddEventToCalendar(data)
+            if EventAdded:
+                return success("Event Added Successfully")
+            else:
+                return error("Error Adding Event!", 400)
+
+
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = 'static/temp_image'
+app.config['NOTICE_FOLDER'] = 'static/image_notice'
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -328,7 +592,7 @@ def tnx_update():
             filename = secure_filename(file.filename)
             inv_id = session["member_id"]
             file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)), app.config['UPLOAD_FOLDER'], filename))
-            FilePath = (os.path.join(os.path.abspath(os.path.dirname(__file__)), f'static\\temp_image\{filename}'))
+            FilePath = BASE_DIR + f'/static/temp_image/{filename}'
             with open(FilePath, "rb") as File:
                 BinaryData = File.read()
             image_format = imghdr.what(None, BinaryData)
@@ -336,6 +600,33 @@ def tnx_update():
             IsInserted = InsertBlob(data)
             if IsInserted:
                 return success("Transaction Uploaded Successfully")
+        else:
+            return error("Error occurred!", 400)     
+
+# Add Notice
+@app.route("/add_notice", methods = ["POST"])
+@login_required
+def add_notice():
+    if request.method == "POST":
+        title = request.form.get("title")
+        content = request.form.get("content")
+        file = request.files["file"]
+        if not title or not content:
+            return error ("Required field cannot be empty!", 400)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            admin_id = session["admin_id"]
+            file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)), app.config['NOTICE_FOLDER'], filename))
+            FilePath = f'\static\image_notice\{filename}'
+            data = (title, content, FilePath)
+            IsAdded = InsertNotice(data)
+            if IsAdded:
+                return success("Notice Added Successfully")
+        elif not file:
+            data = (title, content, "")
+            IsAdded = InsertNotice(data)
+            if IsAdded:
+                return success("Notice Added Successfully")
         else:
             return error("Error occurred!", 400)     
         
@@ -410,6 +701,7 @@ def register():
 
         # Check if registration key is valid
         data = (access_key, account_type)
+        return success(data)
         if not check_access_key(data):
             return error("Please provide a valid Registration Key.", 400)
         destroyOTP(access_key)
@@ -457,6 +749,8 @@ def admission():
         is_registered = insert_student_into_db(data)
 
         if is_registered == True:
+            message = f"Hi {guardian_name}, Your admission process for {grade} has been confirmed! Thank you for choosing our school for your child's early childhood education needs. - Chandrajyoti School"
+            SMS_sociair(guardian_mobile, message)
             return success("Form data submitted successfully")
         else:
             return error("Could not update to database", 400)
@@ -488,7 +782,6 @@ def about_us():
     return render_template("about-us.html")
 
 @app.route("/our-teams")
-@login_required
 def our_teams():
     return render_template("team-chandrajyoti.html")
 
@@ -502,6 +795,17 @@ def career_detail(id):
     job = load_job_from_db(id)
     is_expired = error(has_expired(job["deadline"]), 400)
     return render_template("career-detail.html", job = job, is_expired = is_expired)
+
+# News and updates
+@app.route("/newsandupdates")
+def newsandupdates():
+    notices = load_notices_from_db()
+    return render_template("notice.html", notices = notices)
+
+@app.route("/newsandupdates/<id>")
+def notice_detail(id):
+    notice = load_notice_from_db(id)
+    return render_template("notice-details.html", notice = notice)
     
 # Create Token
 @app.route("/create_token", methods = ["POST"])

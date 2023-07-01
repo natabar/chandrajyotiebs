@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Academic Calendar
+{% endblock %}
+
+{% block body %}
+<div class="card mb-3" style="padding: 5%;">
+    <div class="card">
+        <div id="calendar"></div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/static/evo-calendar.min.js"></script>
+<script>
+    $(document).ready(function() {
+    $('#calendar').evoCalendar({
+
+        calendarEvents: [
+            {% for event in events %}
+            {
+                id: {{ event['id'] }},
+                name: "{{ event['title'] }}",
+                description: "{{ event['description'] }}",{% if event['end_date'] %}
+                date: ["{{ event['date'] }}", "{{ event['end_date'] }}"],{% else %}
+                date: "{{ event['date'] }}",{% endif %}
+                type: "{{ event['type'] }}",
+                everyYear: {{ event['everyYear'] }},
+                color: "{{ event['color'] }}"
+            }{{","}}
+            {% endfor %}
+      {
+        id: 3,
+        name: 'English New Year',
+        description: 'New Year 2023/ Rastriya Topi Diwas/ Poshak Diwas',
+        date: '2023-01-01',
+        type: 'holiday',
+        everyYear: true,
+        color: "#a50c30"
+      }
+    ]    
+    })
+})
+</script>
+{% endblock %}

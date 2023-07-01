@@ -1,0 +1,10 @@
+  <div class="card text-center">
+    <div class="card-body">
+      <h5 class="card-title">{{ notice['title'] }}</h5>
+      <p class="card-text">{{ notice['content'] }}</p>
+      <a href="/newsandupdates/{{notice['id']}}" class="btn btn-danger">Read More...</a>
+    </div>
+    <div class="card-footer text-body-secondary" style="font-size: small;">
+        &#128204; &nbsp; {{notice['date_published']}}
+    </div>
+  </div>

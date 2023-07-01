@@ -8,8 +8,12 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
         <link rel="stylesheet" type="text/css" href="/static/style.css">
         <script type="text/javascript" src="static/jscripts.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <title>{% block title %}{% endblock %}| Chandra Jyoti School</title>
         <link rel="icon" type="image/x-icon" href="/static/images/cj-school-icon.png">
+        <meta name="description" content="Welcome to Chandrajyoti English Boarding School Sindhuli, a leading educational institution in Nepal. We are committed to providing quality education that fosters academic excellence, character development, and lifelong learning.">
+        <meta name="keywords" content="School, Chandrajyoti English Boarding School Sindhuli, Education in Nepal, Best school in Sindhuli, Academic excellence, Character development, Lifelong learning, Comprehensive curriculum, Experienced faculty, State-of-the-art facilities, Leading educational institution">
+        <meta name="Chandrajyoti School" content="Chandrajyoti English Boarding School Sindhuli">
         {% endblock %}
     </head>
 <body>
@@ -25,13 +29,13 @@
                 <a class="nav-link" href="/admin">Dashboard</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Management</a>
+                <a class="nav-link" href="/management">Management</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Staff</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Student</a>
+                <a class="nav-link" href="/admin-attendance">Student</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Class</a>
@@ -43,10 +47,10 @@
                 <a class="nav-link" href="#">Hostel</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Transport</a>
+                <a class="nav-link" href="#">Salary</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Salary</a>
+                <a class="nav-link" href="/admin-sms">SMS</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Settings</a>

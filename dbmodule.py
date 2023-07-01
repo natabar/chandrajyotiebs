@@ -60,6 +60,24 @@ def insert_student_into_db(data):
    except:
        return False
 
+def AddEventToCalendar(data):
+   try:
+      connection = mysql.connect(
+         host="23.106.53.56",
+         user="chakmake_cjadmin",
+         password ="Maheshraj##123",
+         database="chakmake_cjschool"
+      )
+      with connection.cursor() as cursor:
+         insert_query = "INSERT INTO calendar_events (title, description, type, event_date, everyYear, end_date, color) VALUES(%s, %s, %s, %s, %s, %s, %s)"
+         cursor.execute(insert_query, data)
+         # Commit the changes to the database
+         connection.commit()
+         connection.close()
+         return True
+   except:
+      return False
+
 def access_key_into_db(data):
    try:
       # connect to mysql remote databse
@@ -102,8 +120,46 @@ def check_access_key(data):
    except Exception as e:
       return error("1006: Error occurred during database connection")
 
-def fetch_user(user_id):
-   return False
+def load_userdata_from_db(user_type):
+   try:
+      connection = mysql.connect(
+         host="23.106.53.56",
+         user="chakmake_cjadmin",
+         password ="Maheshraj##123",
+         database="chakmake_cjschool"
+      )
+      with connection.cursor() as cursor:
+         if user_type == 'bod':
+            query = "SELECT * FROM investors"
+            cursor.execute(query)
+         elif user_type == 'staff':
+            query = "SELECT * FROM staff"
+            cursor.execute(query)
+         result = cursor.fetchall()
+         list_mobile = []
+         for item in result:
+            list_mobile.append(int(item[3]))
+         connection.close()
+         return list_mobile
+   except:
+      return False
+
+def load_student_data_from_db(grade_level, std_id):
+   try:
+      connection = mysql.connect(
+         host="23.106.53.56",
+         user="chakmake_cjadmin",
+         password ="Maheshraj##123",
+         database="chakmake_cjschool"
+      )
+      with connection.cursor() as cursor:
+         select_query = f"SELECT * FROM {grade_level} WHERE id = %s"
+         cursor.execute(select_query, (std_id,))
+         result = cursor.fetchone()
+         connection.close()
+         return result
+   except Exception as e:
+      return False
 
 def insert_director_into_db(data):
    try:

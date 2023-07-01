@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}
+News and Updates
+{% endblock %}
+
+{% block body %}
+<div class="container-md career-container">
+    <img class="img-fluid" src="static/images/newsandupdates.jpg" style="padding-bottom: 2%;">
+    {% for notice in notices %}
+        {% include 'newsitem.html' %}
+    {% endfor %}
+</div>
+
+  {% endblock %}

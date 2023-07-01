@@ -7,13 +7,13 @@ Admin Dashboard
 {% block body %}
 
   <div class="container text-center">
-    <h2>Investor Dashboard</h2><br>
+    <h2>Admin Dashboard</h2><br>
 
     <div class="row row-cols-1 row-cols-md-4 gap-1 justify-content-center" style="color: #595f64;">
         <div class="col">
           <div class="card card-hover">
             <div class="card-body card-box">
-              <h6><img src="/static/images/bod-icon.svg" height="20px" width="20px"> Investor Count</h6>
+              <h6><img src="/static/images/bod-icon.svg" height="30px" width="30px"> Investor Count</h6>
               <div class="mb-0">
                 <h6>{{ inv_count }}</h6>
               </div>
@@ -23,7 +23,7 @@ Admin Dashboard
         <div class="col">
           <div class="card card-hover">
             <div class="card-body card-box">
-              <h6><img src="/static/images/staff-icon.svg" height="20px" width="20px"> Staff Count</h6>
+              <h6><img src="/static/images/staff-icon.svg" height="30px" width="30px"> Staff Count</h6>
               <div class="mb-0">
                 <h6>{{ staff_count }}</h6>
               </div>
@@ -33,49 +33,13 @@ Admin Dashboard
         <div class="col">
           <div class="card card-hover">
             <div class="card-body card-box">
-              <h6><img src="/static/images/student-icon.svg" height="20px" width="20px"> Student Count</h6>
+              <h6><img src="/static/images/student-icon.svg" height="30px" width="30px"> Student Count</h6>
               <div class="mb-0">
                 <h6>{{ std_count }}</h6>
               </div>
             </div>
           </div>
         </div>
-      </div><br><br>
-
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button type="button" class="btn btn-danger me-md-2" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">Create Access Token</button>
       </div><br>
-
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header" style="text-align: center;">
-        <h1 class="modal-title fs-5">Create Token</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form class="row g-3" action="/create_token" method="post">
-            <div class="col-md-11">
-                <select class="form-select" name="account_type">
-                    <option selected disabled>Account type</option>
-                    <option value="member">Member</option>
-                    <option value="staff">Staff</option>
-                    <option value="student">Student</option>
-                </select>
-            </div>
-            <div class="col-md-11" style="padding-right: 1%;">
-              <input name="mobile" type="text" placeholder="Mobile Number" class="form-control">
-            </div>
-      
-            <div class="mb-3" style="text-align: center;">
-                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button> &nbsp;
-                <button class="btn btn-danger" type="submit">Submit</button>
-            </div>
-      
-          </form>
-    </div>
-    </div>
-  </div>
-</div>
 </div>
 {% endblock %}

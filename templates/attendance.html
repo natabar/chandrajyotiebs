@@ -1,0 +1,40 @@
+{% extends "admin-layout.html" %}
+
+{% block title %}
+Student Attendance
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h3>Student Attendance</h3>
+
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th>Student Name</th>
+          <th>Present</th>
+          <th>Absent</th>
+          <th>Tardy</th>
+          <th>Absent-excused</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in std_all %}
+        <tr>
+          <td>{{ student[1] }}</td>
+          <td><input type="checkbox" name="attendance[]" value="student1"></td>
+          <td><input type="checkbox" name="absence[]" value="student1"></td>
+          <td><input type="checkbox" name="tardy[]" value="student1"></td>
+          <td><input type="checkbox" name="absence-excused[]" value="student1"></td>
+        </tr>
+        {% endfor %}
+        <!-- Add more rows for additional students as needed -->
+      </tbody>
+    </table>
+
+    <div class="mb-3">
+        <button class="btn btn-danger">Submit Attendance</button>
+    </div>
+    
+  </div>
+{% endblock %}
