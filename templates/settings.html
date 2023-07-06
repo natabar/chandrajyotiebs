@@ -1,0 +1,135 @@
+{% extends "admin-layout.html" %}
+
+{% block title %}
+Settings
+{% endblock %}
+
+{% block body %}
+
+  <div class="container text-center"><br>
+    {% if id == 1 %}
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button type="button" class="btn btn-danger me-md-2" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">Create Access Token</button>
+      </div><br>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="text-align: center;">
+        <h1 class="modal-title fs-5">Create Token</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="row g-3" action="/create_token" method="post">
+            <div class="col-md-11">
+                <select class="form-select" name="account_type">
+                    <option selected disabled>Account type</option>
+                    <option value="member">Member</option>
+                    <option value="staff">Staff</option>
+                    <option value="student">Student</option>
+                </select>
+            </div>
+            <div class="col-md-11" style="padding-right: 1%;">
+              <input name="mobile" type="text" placeholder="Mobile Number" class="form-control">
+            </div>
+      
+            <div class="mb-3" style="text-align: center;">
+                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button> &nbsp;
+                <button class="btn btn-danger" type="submit">Submit</button>
+            </div>
+      
+          </form>
+    </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<div class="row">
+    <div class="col-sm-6" style="padding: 1%;">
+      <h3>Add Event to calendar</h3>
+      <div class="card">
+        <div class="card-body">
+
+          <form action="/add_event" method="post">
+
+            <div class="col-md-11 mb-3">
+              <label class="form-label">Event Title<r class="required-field"> *</r></label>
+              <input name="event_title" type="text" class="form-control" placeholder="New Year" required>
+            </div>
+
+            <div class="col-md-11 mb-3">
+                <label class="form-label">Description<r class="required-field"> *</r></label>
+                <textarea name="description" id="description" rows="2" class="form-control"></textarea>
+            </div>
+
+            <div class="col-md-11 mb-3">
+              <label class="form-label">Event Type<r class="required-field"> *</r></label>
+              <select class="form-select" name="event_type">
+                <option selected>Select</option>
+                <option value="holiday">Holiday</option>
+                <option value="extra_curricular">Extra Curricular</option>
+                <option value="exam_schedule">Exam Schedule</option>
+                <option value="event">Other Event</option>
+            </select>
+            </div>
+
+            <div class="col-md-11 mb-3">
+              <label class="form-label">Event Date<r class="required-field"> *</r></label>
+              <input name = "event_date" type="date" class="form-control" required>
+            </div>
+
+            <div class="col-md-11 mb-3">
+              <label class="form-label">End Date (optional)</label>
+              <input name = "end_date" type="date" class="form-control">
+            </div>
+
+            <div class="col-md-11 mb-3">
+              <label class="form-label">Event repeat everyYear?<r class="required-field"> *</r></label>
+              <div class="form-check">
+                <input type="radio" id="true" name="everyYear" value="1">
+                <label for="true">Yes</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="radio" id="false" name="everyYear" value="0">
+                <label for="false">No</label> &nbsp;
+              </div>
+            </div>
+
+            <div class="mb-3">
+                <button class="btn btn-danger" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-6" style="padding: 1%;">
+  <h3>Add Notice</h3>
+  <div class="card">
+    <div class="card-body">
+      <form class="row g-3" action="/add_notice" method="post" enctype="multipart/form-data">
+        <div class="col-md-12">
+            <label class="form-label">Title<r class="required-field"> *</r></label>
+            <input name="title" type="text" class="form-control" required>
+        </div>
+        <div class="col-md-12" style="padding-right: 1%;">
+          <label class="form-label">Content<r class="required-field"> *</r></label>
+          <textarea name="content" id="content" rows="12" class="form-control"></textarea>
+        </div>
+  
+        <div class="col-md-12">
+          <label class="form-label">Photo<r class="required-field"> (optional)</r></label>
+          <input name="file" type="file" class="form-control form-control-file" id="photo" accept="image/*">
+        </div>
+  
+        <div class="mb-3" style="text-align: center;">
+            <button class="btn btn-danger" type="submit">Submit</button>
+        </div>
+  
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+{% endblock %}

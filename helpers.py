@@ -9,8 +9,20 @@ sociair_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiOT
 def error(message, code):
     return render_template("error.html", message = message, code = code)
 
+def admin_error(message, code):
+    return render_template("error-admin.html", message = message, code = code)
+
+def staff_error(message, code):
+    return render_template("error-staff.html", message = message, code = code)
+
 def success(message):
     return render_template("success.html", message = message)
+
+def admin_success(message):
+    return render_template("success-admin.html", message = message)
+
+def staff_success(message):
+    return render_template("success-staff.html", message = message)
 
 def number_validity(number):
     phone_number = NepaliPhoneNumber(english_number_input = number)
@@ -37,6 +49,25 @@ def CheckSMS_Bal(carrier, message):
                 return False
         else:
             return (code, response_msg)
+    except:
+        return (503, "SMS service unavailable")
+
+# Check SMS system Balance
+def check_sms_system_bal():
+    try:
+        headers = {
+            "Authorization": sociair_token,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+        request_url = 'https://sms.sociair.com/api/balance'
+        response = requests.get(request_url, headers = headers)
+        response_msg = response.json()
+        code = response.status_code
+        if code == 200:
+            return  response_msg["balance"]
+        else:
+            return False
     except:
         return (503, "SMS service unavailable")
 
@@ -108,6 +139,58 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if session.get("member_id") is None and session.get("admin_id") is None and session.get("staff_id") is None and session.get("std_id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
+
+def member_login_required(f):
+    """
+    Decorate routes to require login.
+
+    https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("member_id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
+
+def staff_login_required(f):
+    """
+    Decorate routes to require login.
+
+    https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("staff_id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
+
+def admin_login_required(f):
+    """
+    Decorate routes to require login.
+
+    https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("admin_id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
+
+def student_login_required(f):
+    """
+    Decorate routes to require login.
+
+    https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("std_id") is None:
             return redirect("/login")
         return f(*args, **kwargs)
     return decorated_function

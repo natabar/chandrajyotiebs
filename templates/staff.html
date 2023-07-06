@@ -1,0 +1,222 @@
+{% extends "staff-layout.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block body %}
+
+    <div class="container text-center">
+      
+      <div class="container" style="margin-top: 10px;">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link link-danger active" data-bs-toggle="pill" href="#nursery">Nursery</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-danger" data-bs-toggle="pill" href="#lkg">LKG</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-danger" data-bs-toggle="pill" href="#ukg">UKG</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-danger" data-bs-toggle="pill" href="#1">Grade 1</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-danger" data-bs-toggle="pill" href="#2">Grade 2</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-danger" data-bs-toggle="pill" href="#3">Grade 3</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-danger" data-bs-toggle="pill" href="#4">Grade 4</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-danger" data-bs-toggle="pill" href="#5">Grade 5</a>
+          </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div class="tab-pane container active" id="nursery">
+            <table class="table" style="text-align: left;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Gender</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for row in std_nursery %}
+                  <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>{{ row[4] }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+          <div class="tab-pane container fade" id="lkg">
+            <table class="table" style="text-align: left;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Gender</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for row in std_LKG %}
+                  <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>{{ row[4] }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+          <div class="tab-pane container fade" id="ukg">
+            <table class="table" style="text-align: left;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Gender</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for row in std_UKG %}
+                  <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>{{ row[4] }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+          <div class="tab-pane container fade" id="1">
+            <table class="table" style="text-align: left;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Gender</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for row in std_1 %}
+                  <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>{{ row[4] }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+          <div class="tab-pane container fade" id="2">
+            <table class="table" style="text-align: left;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Gender</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for row in std_2 %}
+                  <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>{{ row[4] }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+          <div class="tab-pane container fade" id="3">
+            <table class="table" style="text-align: left;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Gender</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for row in std_3 %}
+                  <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>{{ row[4] }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+          <div class="tab-pane container fade" id="4">
+            <table class="table" style="text-align: left;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Gender</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for row in std_4 %}
+                  <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>{{ row[4] }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+          <div class="tab-pane container fade" id="5">
+            <table class="table" style="text-align: left;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Gender</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for row in std_5 %}
+                  <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>{{ row[4] }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+        </div>
+        </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,345 @@
+{% extends "admin-layout.html" %}
+
+{% block title %}
+Student Info
+{% endblock %}
+
+{% block body %}
+
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-8" style="padding: 1%;">
+                <div class="card">
+                    <div class="card-body card-box">
+                        <h5>Student Info</h5>
+                        <form action = "/std_info" method = "post">
+                            <div class="mb-3">
+                                <input class="form-control" list="student" name="std_name" id="user_std" placeholder="Student Name...">
+                                <datalist id="student">
+                                {% for std in std_nursery %}
+                                    <option value="{{ std[0] }} : {{ std[1] }} of grade_nursery">
+                                {% endfor %}
+                                {% for std in std_LKG %}
+                                    <option value="{{ std[0] }} : {{ std[1] }} of grade_LKG">
+                                {% endfor %}
+                                {% for std in std_UKG %}
+                                    <option value="{{ std[0] }} : {{ std[1] }} of grade_UKG">
+                                {% endfor %}
+                                {% for std in std_1 %}
+                                    <option value="{{ std[0] }} : {{ std[1] }} of grade_1">
+                                {% endfor %}
+                                {% for std in std_2 %}
+                                    <option value="{{ std[0] }} : {{ std[1] }} of grade_2">
+                                {% endfor %}
+                                {% for std in std_3 %}
+                                    <option value="{{ std[0] }} : {{ std[1] }} of grade_3">
+                                {% endfor %}
+                                {% for std in std_4 %}
+                                    <option value="{{ std[0] }} : {{ std[1] }} of grade_4">
+                                {% endfor %}
+                                {% for std in std_5 %}
+                                    <option value="{{ std[0] }} : {{ std[1] }} of grade_5">
+                                {% endfor %}
+                                </datalist>
+                            </div>
+                            <div class="mb-0" style="padding-top: 5px;">
+                                <button class="btn btn-danger" type="submit">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+          
+      </div>
+
+      {% if selected_std != None %}
+      <div class="row">
+        <h3>Student Details</h3>
+
+    <hr class="border border-danger border-1 opacity-50">
+
+    <form class="row g-3" method="post">
+      <div class="col-md-11 text-body-secondary">
+        <label class="form-label">Class</label>
+        <input name="id" type="text" readonly="readonly" value="{{ selected_std[0] }} : {{ grade_level }}" class="form-control" selected placeholder="{{ grade_level }}" required>
+      </div>
+        <div class="col-md-6 text-body-secondary">
+          <label class="form-label">Student Name</label>
+          <input name="full_name" type="text" class="form-control" value="{{ selected_std[1] }}">
+        </div>
+        <div class="col-md-5 text-body-secondary">
+            <label class="form-label">Student's Name in Devnagari</label>
+            <input name="full_name_nepali" type="text" class="form-control" value="{{ selected_std[2] }}" required>
+        </div>
+
+        <div class="col-md-6 text-body-secondary">
+          <label class="form-label">Date of Birth</label>
+          <input name = "dob" type="date" class="form-control" value="{{ selected_std[3] }}" required>
+        </div>
+
+        <div class="col-md-5 text-body-secondary">
+          <label class="form-label">Gender</label>
+          <input name = "gender" type="text" class="form-control" value="{{ selected_std[4] }}" required>
+        </div>
+        <!--For Student's father and Mother-->
+        <div class="col-md-6 text-body-secondary">
+            <label class="form-label">Father's Name</label>
+            <input name="father_name" type="text" class="form-control" value="{{ selected_std[5] }}" required>
+        </div>
+        <div class="col-md-5 text-body-secondary">
+            <label class="form-label">Father's Mobile Number</label>
+            <input name="father_mobile" type="text" class="form-control"  value="{{ selected_std[6] }}">
+        </div>
+
+        <div class="col-md-6 text-body-secondary">
+            <label class="form-label">Mother's Name</label>
+            <input name="mother_name" type="text" class="form-control" value="{{ selected_std[7] }}" required>
+        </div>
+
+        <div class="col-md-5 text-body-secondary">
+            <label class="form-label">Mother's Mobile Number</label>
+            <input name="mother_mobile" type="text" class="form-control" value="{{ selected_std[8] }}">
+        </div>
+        <!---->
+
+        <div class="col-md-11 text-body-secondary">
+            <label for="inputAddress" class="form-label">Address</label>
+            <input name="p_address" type="text" class="form-control" id="inputAddress"  value="{{ selected_std[9] }}" required>
+        </div>
+
+        <div class="col-md-6 text-body-secondary">
+            <label class="form-label">Guardian's Name</label>
+            <input name="guardian_name" type="text" class="form-control" value="{{ selected_std[10] }}" required>
+        </div>
+
+        <div class="col-md-5 text-body-secondary">
+            <label class="form-label">Guardian's Mobile Number</label>
+            <input name="guardian_mobile" type="text" class="form-control" value="{{ selected_std[11] }}" required>
+        </div>
+          <!--For guardians other than Father/Mother-->
+        <div class="col-md-6 text-body-secondary">
+            <label class="form-label">Guardian relationship with student</label>
+            <input name="guardian_relation" type="text" class="form-control" value="{{ selected_std[12] }}" required>
+        </div>
+          <!------------------>
+
+        <div class="mb-3">
+          <button formaction="/update_student" class="btn btn-danger" type="submit" value="submit" onclick="return confirm('Are you sure?');">Update</button>
+        </div>
+
+      </form>
+      </div>
+      {% else %}
+      <div class="container" style="margin-top: 10px;">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link link-danger active" data-bs-toggle="pill" href="#nursery">Nursery</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-danger" data-bs-toggle="pill" href="#lkg">LKG</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-danger" data-bs-toggle="pill" href="#ukg">UKG</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-danger" data-bs-toggle="pill" href="#1">Grade 1</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-danger" data-bs-toggle="pill" href="#2">Grade 2</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-danger" data-bs-toggle="pill" href="#3">Grade 3</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-danger" data-bs-toggle="pill" href="#4">Grade 4</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-danger" data-bs-toggle="pill" href="#5">Grade 5</a>
+          </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div class="tab-pane container active" id="nursery">
+            <table class="table" style="text-align: left;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Grade</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for row in std_nursery %}
+                  <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>Nursery</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+          <div class="tab-pane container fade" id="lkg">
+            <table class="table" style="text-align: left;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Grade</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for row in std_LKG %}
+                  <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>LKG</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+          <div class="tab-pane container fade" id="ukg">
+            <table class="table" style="text-align: left;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Grade</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for row in std_UKG %}
+                  <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>UKG</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+          <div class="tab-pane container fade" id="1">
+            <table class="table" style="text-align: left;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Grade</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for row in std_1 %}
+                  <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>Grade 1</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+          <div class="tab-pane container fade" id="2">
+            <table class="table" style="text-align: left;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Grade</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for row in std_2 %}
+                  <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>Grade 2</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+          <div class="tab-pane container fade" id="3">
+            <table class="table" style="text-align: left;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Grade</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for row in std_3 %}
+                  <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>Grade 3</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+          <div class="tab-pane container fade" id="4">
+            <table class="table" style="text-align: left;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Grade</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for row in std_4 %}
+                  <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>Grade 4</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+          <div class="tab-pane container fade" id="5">
+            <table class="table" style="text-align: left;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Grade</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for row in std_5 %}
+                  <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>Grade 5</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+        </div>
+        </div>
+      {% endif %}
+</div>
+
+
+{% endblock %}

@@ -268,17 +268,18 @@ body
     padding: 8px;
 }
 
-.profile-card {
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: #f8f9fa;
-    padding: 30px;
-    border-radius: 10px;
+.container-profile {
+    padding-inline: 2%;
+}
+
+.profile-body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
 
-  .card-hover:hover {
-    background-color: #f1f1f1;
+  .profile-picture img {
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
   }
 
   input[type="submit"] {
@@ -302,4 +303,6 @@ body
       display: block;
   }
 
-  
+  form {
+    background-color: #fef6f8;
+  }

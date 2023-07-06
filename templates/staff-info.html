@@ -1,0 +1,114 @@
+{% extends "admin-layout.html" %}
+
+{% block title %}
+Staff Info
+{% endblock %}
+
+{% block body %}
+
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-8" style="padding: 1%;">
+                <div class="card">
+                    <div class="card-body card-box">
+                        <h5>Staff Info</h5>
+                        <form action = "/staff-info" method = "post">
+                            <div class="mb-3">
+                                <input class="form-control" list="staff" name="std_name" id="user_std" placeholder="Staff Name...">
+                                <datalist id="staff">
+                                {% for row in staff_all %}
+                                    <option value="{{ row[0] }} : {{ row[1] }}">
+                                {% endfor %}
+                                </datalist>
+                            </div>
+                            <div class="mb-0" style="padding-top: 5px;">
+                                <button class="btn btn-danger" type="submit">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+          
+      </div>
+
+      {% if selected_staff != None %}
+      <div class="row">
+        <h3>Staff Details</h3>
+
+    <hr class="border border-danger border-1 opacity-50">
+
+    <form class="row g-3" method="post">
+      <div class="col-md-11 text-body-secondary">
+        <label class="form-label">ID</label>
+        <input name="id" type="text" readonly="readonly" value="{{ selected_staff[0] }} : {{ grade_level }}" class="form-control" selected placeholder="{{ grade_level }}" required>
+      </div>
+        <div class="col-md-6 text-body-secondary">
+          <label class="form-label">Staff Name</label>
+          <input name="full_name" type="text" class="form-control" value="{{ selected_staff[1] }}">
+        </div>
+        <div class="col-md-5 text-body-secondary">
+            <label class="form-label">Staff's Name in Devnagari</label>
+            <input name="full_name_nepali" type="text" class="form-control" value="{{ selected_staff[2] }}" required>
+        </div>
+
+        <div class="col-md-6 text-body-secondary">
+          <label class="form-label">Date of Birth</label>
+          <input name = "dob" type="date" class="form-control" value="{{ selected_staff[3] }}" required>
+        </div>
+
+        <div class="col-md-5 text-body-secondary">
+          <label class="form-label">Gender</label>
+          <input name = "gender" type="text" class="form-control" value="{{ selected_staff[4] }}" required>
+        </div>
+        <!--For Staff's father and Mother-->
+        <div class="col-md-6 text-body-secondary">
+            <label class="form-label">Father's Name</label>
+            <input name="father_name" type="text" class="form-control" value="{{ selected_staff[5] }}" required>
+        </div>
+
+        <div class="col-md-6 text-body-secondary">
+            <label class="form-label">Mother's Name</label>
+            <input name="mother_name" type="text" class="form-control" value="{{ selected_staff[7] }}" required>
+        </div>
+        <!---->
+
+        <div class="col-md-11 text-body-secondary">
+            <label for="inputAddress" class="form-label">Address</label>
+            <input name="p_address" type="text" class="form-control" id="inputAddress"  value="{{ selected_staff[9] }}" required>
+        </div>
+          <!------------------>
+
+        <div class="mb-3">
+          <button formaction="/update_staff" class="btn btn-danger" type="submit" value="submit" onclick="return confirm('Are you sure?');">Update</button>
+        </div>
+
+      </form>
+      </div>
+      {% else %}
+      <div class="container" style="margin-top: 10px;">
+            <table class="table" style="text-align: left;">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Designation</th>
+                    <th scope="col">Address</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for row in staff_all %}
+                  <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>{{ row[10] }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+        </div>
+      {% endif %}
+</div>
+
+
+{% endblock %}

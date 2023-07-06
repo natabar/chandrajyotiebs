@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/static/style.css">
     <link rel="stylesheet" type="text/css" href="/static/evo-calendar.midnight-blue.min.css">
     <link rel="stylesheet" type="text/css" href="/static/evo-calendar.min.css">
-    <script type="text/javascript" src="static/jscripts.js"></script>
+    <script type="text/javascript" src="/static/jscripts.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <title>{% block title %}{% endblock %}| Chandra Jyoti School</title>
     <link rel="icon" type="image/x-icon" href="/static/images/cj-school-icon.png">
@@ -55,7 +55,7 @@
             </ul>
                 {% if session["member_id"] %}
                   <div class="dropdown profile-dropdown">
-                    <button onclick="myFunction()" class="dropbtn"><img src="static/image_profile/img{{ session['member_id'] }}.jpg" class="rounded-circle" height="30px">&nbsp;&nbsp;Profile</button>
+                    <button onclick="myFunction()" class="dropbtn"><img src="/static/image_profile/img{{ session['member_id'] }}.jpg" class="rounded-circle" height="30px">&nbsp;&nbsp;Profile</button>
                     <div id="myDropdown" class="dropdown-content">
                       <a class="border-bottom" href="/profile">{{ username }}</a>
                       <a class="border-bottom" href="/dashboard">Dashboard</a>

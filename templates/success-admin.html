@@ -1,0 +1,16 @@
+{% extends "admin-layout.html" %}
+
+{% block title %}
+Success!
+{% endblock %}
+
+{% block body %}
+<div class="text-center">
+    <div class="card-body" style="margin-top: 50px;">
+        <img src="/static/images/checked.png" height="100px">
+        <div class="alert" style="color: green;">
+            <p>{{ message }}</p>
+          </div>
+    </div>
+</div>
+{% endblock %}
