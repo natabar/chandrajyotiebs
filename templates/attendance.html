@@ -7,7 +7,7 @@ Student Attendance
 {% block body %}
 <div class="container">
     <h3>Student Attendance</h3>
-
+    {% if class_assigned == 'grade_nursery' %}
     <table class="table">
       <thead class="thead-light">
         <tr>
@@ -19,7 +19,7 @@ Student Attendance
         </tr>
       </thead>
       <tbody>
-        {% for student in std_all %}
+        {% for student in std_nursery %}
         <tr>
           <td>{{ student[1] }}</td>
           <td><input type="checkbox" name="attendance[]" value="student1"></td>
@@ -33,8 +33,202 @@ Student Attendance
     </table>
 
     <div class="mb-3">
-        <button class="btn btn-danger">Submit Attendance</button>
-    </div>
+      <button class="btn btn-danger">Submit Attendance</button>
+  </div>
+    {% elif class_assigned == 'grade_LKG' %}
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th>Student Name</th>
+          <th>Present</th>
+          <th>Absent</th>
+          <th>Tardy</th>
+          <th>Absent-excused</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in std_LKG %}
+        <tr>
+          <td>{{ student[1] }}</td>
+          <td><input type="checkbox" name="attendance[]" value="student1"></td>
+          <td><input type="checkbox" name="absence[]" value="student1"></td>
+          <td><input type="checkbox" name="tardy[]" value="student1"></td>
+          <td><input type="checkbox" name="absence-excused[]" value="student1"></td>
+        </tr>
+        {% endfor %}
+        <!-- Add more rows for additional students as needed -->
+      </tbody>
+    </table>
+    <div class="mb-3">
+      <button class="btn btn-danger">Submit Attendance</button>
+  </div>
+    {% elif class_assigned == 'grade_UKG' %}
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th>Student Name</th>
+          <th>Present</th>
+          <th>Absent</th>
+          <th>Tardy</th>
+          <th>Absent-excused</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in std_UKG %}
+        <tr>
+          <td>{{ student[1] }}</td>
+          <td><input type="checkbox" name="attendance[]" value="student1"></td>
+          <td><input type="checkbox" name="absence[]" value="student1"></td>
+          <td><input type="checkbox" name="tardy[]" value="student1"></td>
+          <td><input type="checkbox" name="absence-excused[]" value="student1"></td>
+        </tr>
+        {% endfor %}
+        <!-- Add more rows for additional students as needed -->
+      </tbody>
+    </table>
+    <div class="mb-3">
+      <button class="btn btn-danger">Submit Attendance</button>
+  </div>
+    {% elif class_assigned == 'grade_1' %}
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th>Student Name</th>
+          <th>Present</th>
+          <th>Absent</th>
+          <th>Tardy</th>
+          <th>Absent-excused</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in std_1 %}
+        <tr>
+          <td>{{ student[1] }}</td>
+          <td><input type="checkbox" name="attendance[]" value="student1"></td>
+          <td><input type="checkbox" name="absence[]" value="student1"></td>
+          <td><input type="checkbox" name="tardy[]" value="student1"></td>
+          <td><input type="checkbox" name="absence-excused[]" value="student1"></td>
+        </tr>
+        {% endfor %}
+        <!-- Add more rows for additional students as needed -->
+      </tbody>
+    </table>
+    <div class="mb-3">
+      <button class="btn btn-danger">Submit Attendance</button>
+  </div>
+    {% elif class_assigned == 'grade_2' %}
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th>Student Name</th>
+          <th>Present</th>
+          <th>Absent</th>
+          <th>Tardy</th>
+          <th>Absent-excused</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in std_2 %}
+        <tr>
+          <td>{{ student[1] }}</td>
+          <td><input type="checkbox" name="attendance[]" value="student1"></td>
+          <td><input type="checkbox" name="absence[]" value="student1"></td>
+          <td><input type="checkbox" name="tardy[]" value="student1"></td>
+          <td><input type="checkbox" name="absence-excused[]" value="student1"></td>
+        </tr>
+        {% endfor %}
+        <!-- Add more rows for additional students as needed -->
+      </tbody>
+    </table>
+
+    <div class="mb-3">
+      <button class="btn btn-danger">Submit Attendance</button>
+  </div>
+    {% elif class_assigned == 'grade_3' %}
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th>Student Name</th>
+          <th>Present</th>
+          <th>Absent</th>
+          <th>Tardy</th>
+          <th>Absent-excused</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in std_3 %}
+        <tr>
+          <td>{{ student[1] }}</td>
+          <td><input type="checkbox" name="attendance[]" value="student1"></td>
+          <td><input type="checkbox" name="absence[]" value="student1"></td>
+          <td><input type="checkbox" name="tardy[]" value="student1"></td>
+          <td><input type="checkbox" name="absence-excused[]" value="student1"></td>
+        </tr>
+        {% endfor %}
+        <!-- Add more rows for additional students as needed -->
+      </tbody>
+    </table>
+
+    <div class="mb-3">
+      <button class="btn btn-danger">Submit Attendance</button>
+  </div>
+    {% elif class_assigned == 'grade_4' %}
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th>Student Name</th>
+          <th>Present</th>
+          <th>Absent</th>
+          <th>Tardy</th>
+          <th>Absent-excused</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in std_4 %}
+        <tr>
+          <td>{{ student[1] }}</td>
+          <td><input type="checkbox" name="attendance[]" value="student1"></td>
+          <td><input type="checkbox" name="absence[]" value="student1"></td>
+          <td><input type="checkbox" name="tardy[]" value="student1"></td>
+          <td><input type="checkbox" name="absence-excused[]" value="student1"></td>
+        </tr>
+        {% endfor %}
+        <!-- Add more rows for additional students as needed -->
+      </tbody>
+    </table>
+
+    <div class="mb-3">
+      <button class="btn btn-danger">Submit Attendance</button>
+  </div>
+    {% elif class_assigned == 'grade_5' %}
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th>Student Name</th>
+          <th>Present</th>
+          <th>Absent</th>
+          <th>Tardy</th>
+          <th>Absent-excused</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in std_5 %}
+        <tr>
+          <td>{{ student[1] }}</td>
+          <td><input type="checkbox" name="attendance[]" value="student1"></td>
+          <td><input type="checkbox" name="absence[]" value="student1"></td>
+          <td><input type="checkbox" name="tardy[]" value="student1"></td>
+          <td><input type="checkbox" name="absence-excused[]" value="student1"></td>
+        </tr>
+        {% endfor %}
+        <!-- Add more rows for additional students as needed -->
+      </tbody>
+    </table>
+
+    <div class="mb-3">
+      <button class="btn btn-danger">Submit Attendance</button>
+  </div>
+    {% endif %}
     
   </div>
 {% endblock %}

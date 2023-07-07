@@ -122,6 +122,27 @@ def update_student_into_db(std_grade, std_id, data):
    except:
        return False
 
+def update_staff_into_db(id, data):
+   try:
+      # connect to mysql remote databse
+      connection = mysql.connect(
+         host="23.106.53.56",
+         user="chakmake_cjadmin",
+         password ="Maheshraj##123",
+         database="chakmake_cjschool"
+      )
+      with connection.cursor() as cursor:
+         data_query = f"UPDATE staff SET email = %s, mobile = %s, designation = %s, class_assigned = %s WHERE staff_id = {id}"
+         cursor.execute(data_query, data)
+         data_query = f"UPDATE staff_profile SET designation = %s WHERE staff_id = {id}"
+         cursor.execute(data_query, (data[2],))
+         # Commit the changes to the database
+         connection.commit()
+         connection.close()
+         return True
+   except:
+       return False
+
 def AddEventToCalendar(data):
    try:
       connection = mysql.connect(

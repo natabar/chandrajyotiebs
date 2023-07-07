@@ -12,9 +12,9 @@ Staff Info
                 <div class="card">
                     <div class="card-body card-box">
                         <h5>Staff Info</h5>
-                        <form action = "/staff-info" method = "post">
+                        <form action = "/get-staff-info" method = "post">
                             <div class="mb-3">
-                                <input class="form-control" list="staff" name="std_name" id="user_std" placeholder="Staff Name...">
+                                <input class="form-control" list="staff" name="staff_name" id="user_staff" placeholder="Staff Name...">
                                 <datalist id="staff">
                                 {% for row in staff_all %}
                                     <option value="{{ row[0] }} : {{ row[1] }}">
@@ -38,45 +38,45 @@ Staff Info
     <hr class="border border-danger border-1 opacity-50">
 
     <form class="row g-3" method="post">
-      <div class="col-md-11 text-body-secondary">
+      <div class="col-md-11 text-body-secondary hidden">
         <label class="form-label">ID</label>
-        <input name="id" type="text" readonly="readonly" value="{{ selected_staff[0] }} : {{ grade_level }}" class="form-control" selected placeholder="{{ grade_level }}" required>
+        <input name="id" type="text" readonly="readonly" value="{{ selected_staff[0] }}" class="form-control" selected placeholder="{{ grade_level }}" required>
       </div>
         <div class="col-md-6 text-body-secondary">
-          <label class="form-label">Staff Name</label>
-          <input name="full_name" type="text" class="form-control" value="{{ selected_staff[1] }}">
-        </div>
-        <div class="col-md-5 text-body-secondary">
-            <label class="form-label">Staff's Name in Devnagari</label>
-            <input name="full_name_nepali" type="text" class="form-control" value="{{ selected_staff[2] }}" required>
-        </div>
-
-        <div class="col-md-6 text-body-secondary">
-          <label class="form-label">Date of Birth</label>
-          <input name = "dob" type="date" class="form-control" value="{{ selected_staff[3] }}" required>
+          <label class="form-label">Staff Name<r class="required-field"> *</r></label>
+          <input name="full_name" readonly type="text" class="form-control" value="{{ selected_staff[1] }}">
         </div>
 
         <div class="col-md-5 text-body-secondary">
-          <label class="form-label">Gender</label>
-          <input name = "gender" type="text" class="form-control" value="{{ selected_staff[4] }}" required>
-        </div>
-        <!--For Staff's father and Mother-->
-        <div class="col-md-6 text-body-secondary">
-            <label class="form-label">Father's Name</label>
-            <input name="father_name" type="text" class="form-control" value="{{ selected_staff[5] }}" required>
+          <label class="form-label">Email<r class="required-field"> *</r></label>
+          <input name = "email" type="email" class="form-control" value="{{ selected_staff[2] }}" required>
         </div>
 
         <div class="col-md-6 text-body-secondary">
-            <label class="form-label">Mother's Name</label>
-            <input name="mother_name" type="text" class="form-control" value="{{ selected_staff[7] }}" required>
+          <label class="form-label">Mobile<r class="required-field"> *</r></label>
+          <input name = "mobile" type="text" class="form-control" value="{{ selected_staff[3] }}" required>
         </div>
-        <!---->
 
-        <div class="col-md-11 text-body-secondary">
-            <label for="inputAddress" class="form-label">Address</label>
-            <input name="p_address" type="text" class="form-control" id="inputAddress"  value="{{ selected_staff[9] }}" required>
+        <div class="col-md-5 text-body-secondary">
+          <label class="form-label">Designation<r class="required-field"> *</r></label>
+          <input name = "designation" type="text" class="form-control" value="{{ selected_staff[9] }}" required>
         </div>
-          <!------------------>
+
+        <div class="col-md-6 text-body-secondary">
+          <label class="form-label">Class Assigned&nbsp;</label>
+            <select class="form-select" name="class_assigned">
+                <option selected>Select</option>
+                <option value="grade_nursery">Nursery</option>
+                <option value="grade_LKG">L.K.G</option>
+                <option value="grade_UKG">U.K.G</option>
+                <option value="grade_1">Grade 1</option>
+                <option value="grade_2">Grade 2</option>
+                <option value="grade_3">Grade 3</option>
+                <option value="grade_4">Grade 4</option>
+                <option value="grade_5">Grade 5</option>
+                <option value="None">None</option>
+            </select>
+        </div>
 
         <div class="mb-3">
           <button formaction="/update_staff" class="btn btn-danger" type="submit" value="submit" onclick="return confirm('Are you sure?');">Update</button>
@@ -92,7 +92,7 @@ Staff Info
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
                     <th scope="col">Designation</th>
-                    <th scope="col">Address</th>
+                    <th scope="col">Assigned Class</th>
                   </tr>
                 </thead>
                 <tbody class="table-group-divider">

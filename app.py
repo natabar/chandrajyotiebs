@@ -3,9 +3,9 @@ from dotenv import load_dotenv
 import os, base64
 import secrets
 from flask_session import Session
-from dbmodule import load_userdata_from_db, load_student_data_from_db, admit_student_into_db, update_student_into_db, pre_register_student, AddEventToCalendar, check_access_key, investor_account_exist, staff_account_exist_in_db, insert_director_into_db, insert_staff_into_db, access_key_into_db, transaction_info_into_db, destroyOTP
+from dbmodule import load_userdata_from_db, load_student_data_from_db, admit_student_into_db, update_staff_into_db, update_student_into_db, pre_register_student, AddEventToCalendar, check_access_key, investor_account_exist, staff_account_exist_in_db, insert_director_into_db, insert_staff_into_db, access_key_into_db, transaction_info_into_db, destroyOTP
 from database import load_job_from_db, load_jobs_from_db, load_notices_from_db, load_notice_from_db
-from memberdb import change_investor_pw, change_admin_pw, change_staff_pw, update_member_profile
+from memberdb import change_investor_pw, change_admin_pw, change_staff_pw, update_member_profile_into_db, update_staff_profile_into_db
 from userdb import staff_account_exist, member_account_exist, student_account_exist, admin_account_exist, retrieve_user_data, retrieve_user_hash
 from helpers import error, admin_error, staff_error, success, admin_success, staff_success, login_required, admin_login_required, member_login_required, staff_login_required, student_login_required, number_validity, check_sms_system_bal, SMS_sociair, multiple_sms, has_expired, npr, TrunDecimal, convert_date
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -173,6 +173,7 @@ def login_continue():
     else:
         return error("We can’t find a page with the url you entered.", 400)
 
+# ###################### Member route ############################
 @app.route("/dashboard")
 @member_login_required
 def dashboard():
@@ -231,8 +232,40 @@ def dashboard():
     except:
         return "1008: Error occurred during database connection"
 
+# Update investor profile
+@app.route("/update-investor-profile", methods = ["POST"])
+@member_login_required
+def update_investor_profile():
+    if request.method == "POST":
+        id = request.form.get("id")
+        full_name = request.form.get("name")
+        education = request.form.get("education")
+        dob = request.form.get("dob")
+        gender = request.form.get("gender")
+        email = request.form.get("email")
+        phone = request.form.get("phone")
+        address = request.form.get("address")
+        about_me = request.form.get("about_me")
+        facebook_url = request.form.get("facebook_url")
+        twitter_url = request.form.get("twitter_url")
+        linkedin_url = request.form.get("linkedin_url")
+        instagram_url = request.form.get("instagram_url")
+        tiktok_url = request.form.get("tiktok_url")
 
-# Admin Dashboard
+        if not id or not full_name or not dob or not gender or not email or not phone or not address:
+            return error("Your form seems to be Incomplete. Please recheck and submit again", 400)
+
+        data1 = (full_name, education, gender, dob, email, phone, address, about_me)
+        data2 = (facebook_url, twitter_url, linkedin_url, instagram_url, tiktok_url)
+        # update to DB
+        is_updated = update_member_profile_into_db(id, data1, data2)
+        if is_updated == True:
+            return success("Profile updated successfully")
+        else:
+            return error("Could not update the data", 400)
+
+
+######################## Admin Route #########################
 @app.route("/admin")
 @admin_login_required
 def admin():
@@ -269,95 +302,10 @@ def admin():
     except Exception as e:
         return admin_error(e, 404)
 
-
-# Staff Dashboard
-@app.route("/staff")
-@staff_login_required
-def staff():
-    try:
-        connection = mysql.connect (
-            host = "23.106.53.56",
-            user = "chakmake_cjadmin",
-            password = "Maheshraj##123",
-            database = "chakmake_cjschool"
-        )
-        with connection.cursor() as cursor:
-            data_query = "SELECT * FROM staff WHERE staff_id = %s"
-            cursor.execute(data_query, (session["staff_id"],))
-            row = cursor.fetchone()
-
-            cursor.execute("SELECT * FROM grade_nursery")
-            std_nursery = cursor.fetchall()
-
-            cursor.execute("SELECT * FROM grade_LKG")
-            std_LKG = cursor.fetchall()
-
-            cursor.execute("SELECT * FROM grade_UKG")
-            std_UKG = cursor.fetchall()
-
-            cursor.execute("SELECT * FROM grade_1")
-            std_1 = cursor.fetchall()
-
-            cursor.execute("SELECT * FROM grade_2")
-            std_2 = cursor.fetchall()
-
-            cursor.execute("SELECT * FROM grade_3")
-            std_3 = cursor.fetchall()
-
-            cursor.execute("SELECT * FROM grade_4")
-            std_4 = cursor.fetchall()
-
-            cursor.execute("SELECT * FROM grade_5")
-            std_5 = cursor.fetchall()
-
-            connection.close()
-            template_data = {
-                'username' : row[1],
-                'std_nursery' : std_nursery,
-                'std_LKG' : std_LKG,
-                'std_UKG' : std_UKG,
-                'std_1' : std_1,
-                'std_2' : std_2,
-                'std_3' : std_3,
-                'std_4' : std_4,
-                'std_5' : std_5
-            }
-            return render_template("staff.html", **template_data)
-    except Exception as e:
-        return staff_error(e, 404)
-
-# Student Attendance for Staff
-@app.route("/attendance")
-@staff_login_required
-def attendance():
-    try:
-        connection = mysql.connect (
-            host = "23.106.53.56",
-            user = "chakmake_cjadmin",
-            password = "Maheshraj##123",
-            database = "chakmake_cjschool"
-        )
-        with connection.cursor() as cursor:
-            data_query = "SELECT * FROM staff WHERE staff_id = %s"
-            cursor.execute(data_query, (session["staff_id"],))
-            row = cursor.fetchone()
-
-            cursor.execute("SELECT * FROM grade_5")
-            std_all = cursor.fetchall()
-
-            connection.close()
-            template_data = {
-                'username' : row[1],
-                'std_all' : std_all
-            }
-            return render_template("attendance.html", **template_data)
-    except Exception as e:
-        return staff_error(e, 404)
-
 # search handling for specific student 
 @app.route("/std_info", methods = ["POST", "GET"])
 @admin_login_required
-def verify():
+def get_std_info():
     if request.method == "POST":
         std_name = request.form.get("std_name")
         user_staff = request.form.get("user_staff")
@@ -439,6 +387,48 @@ def verify():
     else:
         return error("Aunauthorized Access Attempt!", 400)
 
+# search handling for specific staff 
+@app.route("/get-staff-info", methods = ["POST", "GET"])
+@admin_login_required
+def get_staff_info():
+    if request.method == "POST":
+        user_staff = request.form.get("staff_name")
+        if not user_staff:
+            return admin_error("input data cannot be empty!", 400)
+        split_word = user_staff.split()
+        staff_id = int(split_word[0])
+
+        # check if user exists
+        try:
+            connection = mysql.connect (
+                host = "23.106.53.56",
+                user = "chakmake_cjadmin",
+                password = "Maheshraj##123",
+                database = "chakmake_cjschool"
+            )
+            with connection.cursor() as cursor:
+                data_query = "SELECT * FROM admin WHERE admin_id = %s"
+                cursor.execute(data_query, (session["admin_id"],))
+                row = cursor.fetchone()
+
+                cursor.execute("SELECT * FROM staff")
+                staff_all = cursor.fetchall()
+
+                data_query = f"SELECT * FROM staff WHERE staff_id = {staff_id}"
+                cursor.execute(data_query)
+                selected_staff = cursor.fetchone()
+
+                connection.close()
+                template_data = {
+                    'username' : row[1],
+                    'staff_all' : staff_all,
+                    'selected_staff' : selected_staff
+                }
+            return render_template("staff-info.html", **template_data)
+        except Exception as e:
+            return admin_error(e, 404)
+    else:
+        return error("Unauthorized Access Attempt!", 400)
 
 # Update Student Details
 @app.route("/update_student", methods = ["POST"])
@@ -473,41 +463,29 @@ def update_student():
         else:
             return admin_error("Could not update the data", 400)
 
-# Update investor profile
-@app.route("/update-investor-profile", methods = ["POST"])
-@member_login_required
-def update_investor_profile():
+# Update Staff Details
+@app.route("/update_staff", methods = ["POST"])
+@admin_login_required
+def update_staff():
     if request.method == "POST":
-        id = request.form.get("id")
-        full_name = request.form.get("name")
-        education = request.form.get("education")
-        dob = request.form.get("dob")
-        gender = request.form.get("gender")
+        staff_id = request.form.get("id")
         email = request.form.get("email")
-        phone = request.form.get("phone")
-        address = request.form.get("address")
-        about_me = request.form.get("about_me")
-        facebook_url = request.form.get("facebook_url")
-        twitter_url = request.form.get("twitter_url")
-        linkedin_url = request.form.get("linkedin_url")
-        instagram_url = request.form.get("instagram_url")
-        tiktok_url = request.form.get("tiktok_url")
+        mobile = request.form.get("mobile")
+        designation = request.form.get("designation")
+        class_assigned = request.form.get("class_assigned")
 
-        if not id or not full_name or not dob or not gender or not email or not phone or not address:
-            return error("Your form seems to be Incomplete. Please recheck and submit again", 400)
+        if not id or not email or not mobile or not designation:
+            return admin_error("Required field cannot be empty", 400)
 
-        data1 = (full_name, education, gender, dob, email, phone, address, about_me)
-        data2 = (facebook_url, twitter_url, linkedin_url, instagram_url, tiktok_url)
+        data = (email, mobile, designation, class_assigned)
         # update to DB
-        is_updated = update_member_profile(id, data1, data2)
+        is_updated = update_staff_into_db(staff_id, data)
         if is_updated == True:
-            return success("Profile updated successfully")
+            return admin_success("Staff data updated successfully")
         else:
-            return error("Could not update the data", 400)
+            return admin_error("Could not update the data", 400)
 
-
-
-# Admin Dashboard
+# Admin SMS
 @app.route("/admin-sms")
 @admin_login_required
 def admin_sms():
@@ -587,7 +565,7 @@ def admin_sms():
     except Exception as e:
         return admin_error(e, 404)
 
-# Send SMS to people
+# Send multiple SMS to people
 @app.route("/bulk_sms", methods=["POST"])
 @admin_login_required
 def bulk_sms():
@@ -713,8 +691,8 @@ def student_info():
         return admin_error(e, 404)
 
 
-# For Student Info UX
-@app.route("/staff-info")
+# For Staff Info UX
+@app.route("/staff-info", methods = ['GET'])
 @admin_login_required
 def staff_info():
     try:
@@ -742,6 +720,150 @@ def staff_info():
     except Exception as e:
         return admin_error(e, 404)
 
+######################## Staff Route #########################
+@app.route("/staff")
+@staff_login_required
+def staff():
+    try:
+        connection = mysql.connect (
+            host = "23.106.53.56",
+            user = "chakmake_cjadmin",
+            password = "Maheshraj##123",
+            database = "chakmake_cjschool"
+        )
+        with connection.cursor() as cursor:
+            data_query = "SELECT * FROM staff WHERE staff_id = %s"
+            cursor.execute(data_query, (session["staff_id"],))
+            row = cursor.fetchone()
+
+            cursor.execute("SELECT * FROM grade_nursery")
+            std_nursery = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_LKG")
+            std_LKG = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_UKG")
+            std_UKG = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_1")
+            std_1 = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_2")
+            std_2 = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_3")
+            std_3 = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_4")
+            std_4 = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_5")
+            std_5 = cursor.fetchall()
+
+            connection.close()
+            template_data = {
+                'username' : row[1],
+                'std_nursery' : std_nursery,
+                'std_LKG' : std_LKG,
+                'std_UKG' : std_UKG,
+                'std_1' : std_1,
+                'std_2' : std_2,
+                'std_3' : std_3,
+                'std_4' : std_4,
+                'std_5' : std_5
+            }
+            return render_template("staff.html", **template_data)
+    except Exception as e:
+        return staff_error(e, 404)
+
+# Student Attendance for Staff
+@app.route("/attendance")
+@staff_login_required
+def attendance():
+    try:
+        connection = mysql.connect (
+            host = "23.106.53.56",
+            user = "chakmake_cjadmin",
+            password = "Maheshraj##123",
+            database = "chakmake_cjschool"
+        )
+        with connection.cursor() as cursor:
+            data_query = "SELECT * FROM staff WHERE staff_id = %s"
+            cursor.execute(data_query, (session["staff_id"],))
+            row = cursor.fetchone()
+
+            cursor.execute("SELECT * FROM grade_nursery")
+            std_nursery = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_LKG")
+            std_LKG = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_UKG")
+            std_UKG = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_1")
+            std_1 = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_2")
+            std_2 = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_3")
+            std_3 = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_4")
+            std_4 = cursor.fetchall()
+
+            cursor.execute("SELECT * FROM grade_5")
+            std_5 = cursor.fetchall()
+
+            connection.close()
+            template_data = {
+                'class_assigned' : row[10],
+                'username' : row[1],
+                'std_nursery' : std_nursery,
+                'std_LKG' : std_LKG,
+                'std_UKG' : std_UKG,
+                'std_1' : std_1,
+                'std_2' : std_2,
+                'std_3' : std_3,
+                'std_4' : std_4,
+                'std_5' : std_5
+            }
+            return render_template("attendance.html", **template_data)
+    except Exception as e:
+        return staff_error(e, 404)
+
+# Update staff profile
+@app.route("/update-staff-profile", methods = ["POST"])
+@staff_login_required
+def update_staff_profile():
+    if request.method == "POST":
+        id = request.form.get("id")
+        full_name = request.form.get("name")
+        education = request.form.get("education")
+        dob = request.form.get("dob")
+        gender = request.form.get("gender")
+        email = request.form.get("email")
+        phone = request.form.get("phone")
+        address = request.form.get("address")
+        about_me = request.form.get("about_me")
+        facebook_url = request.form.get("facebook_url")
+        twitter_url = request.form.get("twitter_url")
+        linkedin_url = request.form.get("linkedin_url")
+        instagram_url = request.form.get("instagram_url")
+        tiktok_url = request.form.get("tiktok_url")
+
+        if not id or not full_name or not dob or not gender or not email or not phone or not address:
+            return staff_error("Your form seems to be Incomplete. Please recheck and submit again", 400)
+
+        data1 = (full_name, education, gender, dob, email, phone, address, about_me)
+        data2 = (facebook_url, twitter_url, linkedin_url, instagram_url, tiktok_url)
+        # update to DB
+        is_updated = update_staff_profile_into_db(id, data1, data2)
+        if is_updated == True:
+            return staff_success("Profile updated successfully")
+        else:
+            return staff_error("Could not update the data", 400)
 
 # Calendar
 @app.route("/calendar")
@@ -1211,5 +1333,36 @@ def profile():
             'social_media' : social_media
         }
         return render_template("profile.html", **template_data)
+    except Exception as e:
+        return error(e, 400)
+
+# Staff profile view
+@app.route("/staff-profile")
+@staff_login_required
+def staff_profile():
+    try:
+        connection = mysql.connect (
+            host = "23.106.53.56",
+            user = "chakmake_cjadmin",
+            password = "Maheshraj##123",
+            database = "chakmake_cjschool"
+        )
+        with connection.cursor() as cursor:
+            # fetch data of logged in User
+            data_query = "SELECT * FROM staff_profile WHERE id = %s"
+            cursor.execute(data_query, (session["staff_id"],))
+            row = cursor.fetchone()
+
+            data_query = "SELECT * FROM staff_social_media WHERE id = %s"
+            cursor.execute(data_query, (session["staff_id"],))
+            social_media = cursor.fetchone()
+
+            connection.close()
+        template_data = {
+            'username' : row[2],
+            'profile' : row,
+            'social_media' : social_media
+        }
+        return render_template("profile-staff.html", **template_data)
     except Exception as e:
         return error(e, 400)
