@@ -127,7 +127,7 @@ def multiple_sms(list_mobile, message):
         else:
             data = response.json()
             return data
-    except Exception as e:
+    except:
         return "Error: SMS service failed"
 
 def login_required(f):

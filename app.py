@@ -595,7 +595,7 @@ def bulk_sms():
         audience_type = request.form.get('audience_type')
         message = request.form.get('content')
         if not audience_type or not message:
-            return admin_error("incomplete input provided!", 400)
+            return admin_error("Recipient and/or message missing!", 400)
         user_data = load_userdata_from_db(audience_type)
 
         # Convert numbers to strings
@@ -1212,4 +1212,4 @@ def profile():
         }
         return render_template("profile.html", **template_data)
     except Exception as e:
-        return success(e)
+        return error(e, 400)

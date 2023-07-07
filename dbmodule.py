@@ -119,8 +119,8 @@ def update_student_into_db(std_grade, std_id, data):
          connection.commit()
          connection.close()
          return True
-   except Exception as e:
-       return e
+   except:
+       return False
 
 def AddEventToCalendar(data):
    try:
@@ -157,7 +157,7 @@ def access_key_into_db(data):
          connection.close()
          return True
    
-   except Exception as e:
+   except:
       return error("1005: Error occurred during database connection")
 
 def check_access_key(data):
@@ -179,7 +179,7 @@ def check_access_key(data):
          else:
             connection.close()
             return True
-   except Exception as e:
+   except:
       return error("1006: Error occurred during database connection")
 
 def load_userdata_from_db(user_type):
@@ -191,7 +191,17 @@ def load_userdata_from_db(user_type):
          database="chakmake_cjschool"
       )
       with connection.cursor() as cursor:
-         if user_type == 'bod':
+         if user_type == 'student':
+            query = "SELECT * FROM grade_nursery UNION SELECT * FROM grade_LKG UNION SELECT * FROM grade_UKG UNION SELECT * FROM grade_1 UNION SELECT * FROM grade_2 UNION SELECT * FROM grade_3 UNION SELECT * FROM grade_4 UNION SELECT * FROM grade_5"
+            cursor.execute(query)
+            result = cursor.fetchall()
+            list_mobile = []
+            for item in result:
+               if item[11] != '':
+                  list_mobile.append(int(item[11]))
+            connection.close()
+            return list_mobile
+         elif user_type == 'bod':
             query = "SELECT * FROM investors"
             cursor.execute(query)
          elif user_type == 'staff':
@@ -220,7 +230,7 @@ def load_student_data_from_db(grade_level, std_id):
          result = cursor.fetchone()
          connection.close()
          return result
-   except Exception as e:
+   except:
       return False
 
 def insert_director_into_db(data):
