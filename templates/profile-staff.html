@@ -9,7 +9,7 @@ Profile
     <div class="container-fluid container-profile" style="padding-top: 1%;">
         <div class="profile-head bg-danger text-center" style="border: none; box-shadow: 0px 0px 5px 0px rgba(247,15,15,0.81);">
             <div class="profile-picture">
-              <img src="/static/staff-profile/img{{ profile[0] }}.jpg" alt="Profile Avatar" class="img-fluid" style="width: 200px; height: 200px;">
+              <img src="static/staff-profile/img{{ profile[0] }}.{{ profile[12] }}" alt="Profile Avatar" class="img-fluid" style="width: 200px; height: 200px;">
             </div>
             <div style="color: white;">
                 <h3>{{ profile[2] }}</h3>
@@ -34,7 +34,7 @@ Profile
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
-                        <form action="/update-staff-profile" method="post">
+                        <form action="/update-staff-profile" method="post" enctype="multipart/form-data">
                         <div class="modal-header">
                           <h5 class="modal-title" id="exampleModalLabel">Edit profile</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -44,6 +44,10 @@ Profile
                           <div class="mb-0 hidden">
                             <label class="form-label">ID</label>
                             <input name="id" readonly type="text" class="form-control" placeholder="{{ profile[0] }}" value="{{ profile[0] }}" required>
+                          </div>
+                          <div class="mb-0">
+                            <label class="form-label">Profile Picture<r class="required-field"> (optional)</r></label>
+                            <input name="file" type="file" class="form-control form-control-file" id="photo" accept="image/*" required>
                           </div>
                           <div class="mb-0">
                             <label class="form-label">Name<r class="required-field"> *</r></label>

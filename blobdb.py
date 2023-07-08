@@ -44,3 +44,19 @@ def retrieve_image_from_db (id, image_data, image_format):
     with open(file_path, "wb") as file:
             file.write(image_data)
     return True
+
+def retrieve_staff_photo_from_db (id, image_data, image_format):
+    # Specify the file path
+    file_path = f"static/staff-profile/img{id}.{image_format}"
+    # Save the image data to a file
+    with open(file_path, "wb") as file:
+            file.write(image_data)
+    return True
+
+def retrieve_investor_photo_from_db (id, image_data, image_format):
+    # Specify the file path
+    file_path = f"static/investors-profile/img{id}.{image_format}"
+    # Save the image data to a file
+    with open(file_path, "wb") as file:
+            file.write(image_data)
+    return True

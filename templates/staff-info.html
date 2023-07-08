@@ -65,7 +65,13 @@ Staff Info
         <div class="col-md-6 text-body-secondary">
           <label class="form-label">Class Assigned&nbsp;</label>
             <select class="form-select" name="class_assigned">
+                {% if selected_staff[10] == None %}
                 <option selected>Select</option>
+                {% elif selected_staff[10] == '' %}
+                <option selected>Select</option>
+                {% else %}
+                <option selected value="{{ selected_staff[10] }}">{{ selected_staff[10] }}</option>
+                {% endif %}
                 <option value="grade_nursery">Nursery</option>
                 <option value="grade_LKG">L.K.G</option>
                 <option value="grade_UKG">U.K.G</option>
@@ -74,7 +80,7 @@ Staff Info
                 <option value="grade_3">Grade 3</option>
                 <option value="grade_4">Grade 4</option>
                 <option value="grade_5">Grade 5</option>
-                <option value="None">None</option>
+                <option value="">No Class</option>
             </select>
         </div>
 

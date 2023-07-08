@@ -64,7 +64,7 @@ def update_member_profile_into_db(id, data1, data2):
          database="chakmake_cjschool"
       )
       with connection.cursor() as cursor:
-         data1_query = f"UPDATE investors_profile SET full_name = %s, education = %s, gender = %s, dob = %s, email = %s, phone_number = %s , address = %s, about_me = %s WHERE inv_id = {id}"
+         data1_query = f"UPDATE investors_profile SET full_name = %s, education = %s, gender = %s, dob = %s, email = %s, phone_number = %s , address = %s, about_me = %s, photo = %s, img_format = %s WHERE inv_id = {id}"
          cursor.execute(data1_query, data1)
 
          data2_query = f"UPDATE investors_social_media  SET facebook_url = %s, twitter_url = %s, linkedin_url = %s, instagram_url = %s, tiktok_url = %s WHERE inv_id = {id}"
@@ -87,7 +87,7 @@ def update_staff_profile_into_db(id, data1, data2):
          database="chakmake_cjschool"
       )
       with connection.cursor() as cursor:
-         data1_query = f"UPDATE staff_profile SET full_name = %s, education = %s, gender = %s, dob = %s, email = %s, phone_number = %s , address = %s, about_me = %s WHERE staff_id = {id}"
+         data1_query = f"UPDATE staff_profile SET full_name = %s, education = %s, gender = %s, dob = %s, email = %s, phone_number = %s , address = %s, about_me = %s, photo = %s, img_format = %s WHERE staff_id = {id}"
          cursor.execute(data1_query, data1)
 
          data2_query = f"UPDATE staff_social_media  SET facebook_url = %s, twitter_url = %s, linkedin_url = %s, instagram_url = %s, tiktok_url = %s WHERE staff_id = {id}"

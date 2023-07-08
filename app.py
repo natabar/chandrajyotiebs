@@ -13,7 +13,7 @@ from datetime import date, datetime
 import mysql.connector as mysql
 from werkzeug.utils import secure_filename
 import urllib.request
-from blobdb import InsertBlob, retrieve_image_from_db, InsertNotice
+from blobdb import InsertBlob, retrieve_image_from_db, retrieve_investor_photo_from_db, retrieve_staff_photo_from_db, InsertNotice
 import imghdr
 import json
 
@@ -231,39 +231,6 @@ def dashboard():
         return render_template("dashboard.html", **template_data)
     except:
         return "1008: Error occurred during database connection"
-
-# Update investor profile
-@app.route("/update-investor-profile", methods = ["POST"])
-@member_login_required
-def update_investor_profile():
-    if request.method == "POST":
-        id = request.form.get("id")
-        full_name = request.form.get("name")
-        education = request.form.get("education")
-        dob = request.form.get("dob")
-        gender = request.form.get("gender")
-        email = request.form.get("email")
-        phone = request.form.get("phone")
-        address = request.form.get("address")
-        about_me = request.form.get("about_me")
-        facebook_url = request.form.get("facebook_url")
-        twitter_url = request.form.get("twitter_url")
-        linkedin_url = request.form.get("linkedin_url")
-        instagram_url = request.form.get("instagram_url")
-        tiktok_url = request.form.get("tiktok_url")
-
-        if not id or not full_name or not dob or not gender or not email or not phone or not address:
-            return error("Your form seems to be Incomplete. Please recheck and submit again", 400)
-
-        data1 = (full_name, education, gender, dob, email, phone, address, about_me)
-        data2 = (facebook_url, twitter_url, linkedin_url, instagram_url, tiktok_url)
-        # update to DB
-        is_updated = update_member_profile_into_db(id, data1, data2)
-        if is_updated == True:
-            return success("Profile updated successfully")
-        else:
-            return error("Could not update the data", 400)
-
 
 ######################## Admin Route #########################
 @app.route("/admin")
@@ -833,38 +800,6 @@ def attendance():
     except Exception as e:
         return staff_error(e, 404)
 
-# Update staff profile
-@app.route("/update-staff-profile", methods = ["POST"])
-@staff_login_required
-def update_staff_profile():
-    if request.method == "POST":
-        id = request.form.get("id")
-        full_name = request.form.get("name")
-        education = request.form.get("education")
-        dob = request.form.get("dob")
-        gender = request.form.get("gender")
-        email = request.form.get("email")
-        phone = request.form.get("phone")
-        address = request.form.get("address")
-        about_me = request.form.get("about_me")
-        facebook_url = request.form.get("facebook_url")
-        twitter_url = request.form.get("twitter_url")
-        linkedin_url = request.form.get("linkedin_url")
-        instagram_url = request.form.get("instagram_url")
-        tiktok_url = request.form.get("tiktok_url")
-
-        if not id or not full_name or not dob or not gender or not email or not phone or not address:
-            return staff_error("Your form seems to be Incomplete. Please recheck and submit again", 400)
-
-        data1 = (full_name, education, gender, dob, email, phone, address, about_me)
-        data2 = (facebook_url, twitter_url, linkedin_url, instagram_url, tiktok_url)
-        # update to DB
-        is_updated = update_staff_profile_into_db(id, data1, data2)
-        if is_updated == True:
-            return staff_success("Profile updated successfully")
-        else:
-            return staff_error("Could not update the data", 400)
-
 # Calendar
 @app.route("/calendar")
 def calendar():
@@ -941,6 +876,8 @@ def add_event():
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = 'static/temp_image'
 app.config['NOTICE_FOLDER'] = 'static/image_notice'
+app.config['STAFF_PROFILE_FOLDER'] = 'static/staff-profile-temp'
+app.config['INVESTORS_PROFILE_FOLDER'] = 'static/investors-profile-temp'
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -996,7 +933,98 @@ def add_notice():
                 return admin_success("Notice Added Successfully")
         else:
             return admin_error("Error occurred!", 400)     
-        
+
+# Update investor profile
+@app.route("/update-investor-profile", methods = ["POST"])
+@member_login_required
+def update_investor_profile():
+    if request.method == "POST":
+        id = request.form.get("id")
+        file = request.files["file"]
+        full_name = request.form.get("name")
+        education = request.form.get("education")
+        dob = request.form.get("dob")
+        gender = request.form.get("gender")
+        email = request.form.get("email")
+        phone = request.form.get("phone")
+        address = request.form.get("address")
+        about_me = request.form.get("about_me")
+        facebook_url = request.form.get("facebook_url")
+        twitter_url = request.form.get("twitter_url")
+        linkedin_url = request.form.get("linkedin_url")
+        instagram_url = request.form.get("instagram_url")
+        tiktok_url = request.form.get("tiktok_url")
+
+        if not id or not full_name or not dob or not gender or not email or not phone or not address:
+            return error("Your form seems to be Incomplete. Please recheck and submit again", 400)
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            FilePath = BASE_DIR + f'/static/investors-profile-temp/{filename}'
+            # Check if the file already exists
+            if os.path.exists(FilePath):
+                # Remove the existing file
+                os.remove(FilePath)
+            file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)), app.config['INVESTORS_PROFILE_FOLDER'], filename))
+            with open(FilePath, "rb") as File:
+                BinaryData = File.read()
+            image_format = imghdr.what(None, BinaryData)
+
+        data1 = (full_name, education, gender, dob, email, phone, address, about_me, BinaryData, image_format)
+        data2 = (facebook_url, twitter_url, linkedin_url, instagram_url, tiktok_url)
+        # update to DB
+        is_updated = update_member_profile_into_db(id, data1, data2)
+        if is_updated == True:
+            return success("Profile updated successfully")
+        else:
+            return error("Could not update the data", 400)
+
+# Update staff profile
+@app.route("/update-staff-profile", methods = ["POST"])
+@staff_login_required
+def update_staff_profile():
+    if request.method == "POST":
+        id = request.form.get("id")
+        file = request.files["file"]
+        full_name = request.form.get("name")
+        education = request.form.get("education")
+        dob = request.form.get("dob")
+        gender = request.form.get("gender")
+        email = request.form.get("email")
+        phone = request.form.get("phone")
+        address = request.form.get("address")
+        about_me = request.form.get("about_me")
+        facebook_url = request.form.get("facebook_url")
+        twitter_url = request.form.get("twitter_url")
+        linkedin_url = request.form.get("linkedin_url")
+        instagram_url = request.form.get("instagram_url")
+        tiktok_url = request.form.get("tiktok_url")
+
+        if not id or not full_name or not dob or not gender or not email or not phone or not address:
+            return staff_error("Your form seems to be Incomplete. Please recheck and submit again", 400)
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            FilePath = BASE_DIR + f'/static/staff-profile-temp/{filename}'
+            # Check if the file already exists
+            if os.path.exists(FilePath):
+                # Remove the existing file
+                os.remove(FilePath)
+            file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)), app.config['STAFF_PROFILE_FOLDER'], filename))
+            with open(FilePath, "rb") as File:
+                BinaryData = File.read()
+            image_format = imghdr.what(None, BinaryData)
+
+        data1 = (full_name, education, gender, dob, email, phone, address, about_me, BinaryData, image_format)
+        data2 = (facebook_url, twitter_url, linkedin_url, instagram_url, tiktok_url)
+        # update to DB
+        is_updated = update_staff_profile_into_db(id, data1, data2)
+        if is_updated == True:
+            return staff_success("Profile updated successfully")
+        else:
+            return staff_error("Could not update the data", 400)
+
+
 @app.route("/change-pwd", methods = ["POST"])
 @login_required
 def change_pwd():
@@ -1327,6 +1355,12 @@ def profile():
             social_media = cursor.fetchone()
 
             connection.close()
+            # retrieve Image from DB
+            if row[11]:
+                id = str(row[0])
+                image_data = row[11]
+                image_format = row[12]
+                retrieve_investor_photo_from_db (id, image_data, image_format)
         template_data = {
             'username' : row[2],
             'profile' : row,
@@ -1358,6 +1392,11 @@ def staff_profile():
             social_media = cursor.fetchone()
 
             connection.close()
+            # retrieve Image from DB
+            id = str(row[0])
+            image_data = row[11]
+            image_format = row[12]
+            retrieve_staff_photo_from_db (id, image_data, image_format)
         template_data = {
             'username' : row[2],
             'profile' : row,
