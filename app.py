@@ -13,7 +13,7 @@ from datetime import date, datetime
 import mysql.connector as mysql
 from werkzeug.utils import secure_filename
 import urllib.request
-from blobdb import InsertBlob, retrieve_image_from_db, retrieve_investor_photo_from_db, retrieve_staff_photo_from_db, InsertNotice
+from blobdb import InsertBlob, update_member_profile_picture, update_staff_profile_picture, retrieve_image_from_db, retrieve_investor_photo_from_db, retrieve_staff_photo_from_db, InsertNotice
 import imghdr
 import json
 
@@ -969,8 +969,10 @@ def update_investor_profile():
             with open(FilePath, "rb") as File:
                 BinaryData = File.read()
             image_format = imghdr.what(None, BinaryData)
+            data = (BinaryData, image_format)
+            update_member_profile_picture(id, data)
 
-        data1 = (full_name, education, gender, dob, email, phone, address, about_me, BinaryData, image_format)
+        data1 = (full_name, education, gender, dob, email, phone, address, about_me)
         data2 = (facebook_url, twitter_url, linkedin_url, instagram_url, tiktok_url)
         # update to DB
         is_updated = update_member_profile_into_db(id, data1, data2)
@@ -1014,8 +1016,10 @@ def update_staff_profile():
             with open(FilePath, "rb") as File:
                 BinaryData = File.read()
             image_format = imghdr.what(None, BinaryData)
+            data = (BinaryData, image_format)
+            update_staff_profile_picture(id, data)
 
-        data1 = (full_name, education, gender, dob, email, phone, address, about_me, BinaryData, image_format)
+        data1 = (full_name, education, gender, dob, email, phone, address, about_me)
         data2 = (facebook_url, twitter_url, linkedin_url, instagram_url, tiktok_url)
         # update to DB
         is_updated = update_staff_profile_into_db(id, data1, data2)

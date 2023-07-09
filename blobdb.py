@@ -60,3 +60,43 @@ def retrieve_investor_photo_from_db (id, image_data, image_format):
     with open(file_path, "wb") as file:
             file.write(image_data)
     return True
+
+def update_member_profile_picture(id, data):
+    try:
+      # connect to mysql remote databse
+      connection = mysql.connect(
+         host="23.106.53.56",
+         user="chakmake_cjadmin",
+         password ="Maheshraj##123",
+         database="chakmake_cjschool"
+      )
+      with connection.cursor() as cursor:
+         data_query = f"UPDATE investors_profile SET photo = %s, img_format = %s WHERE inv_id = {id}"
+         cursor.execute(data_query, data)
+
+         # Commit the changes to the database
+         connection.commit()
+         connection.close()
+         return True
+    except:
+        return False
+
+def update_staff_profile_picture(id, data):
+    try:
+      # connect to mysql remote databse
+      connection = mysql.connect(
+         host="23.106.53.56",
+         user="chakmake_cjadmin",
+         password ="Maheshraj##123",
+         database="chakmake_cjschool"
+      )
+      with connection.cursor() as cursor:
+         data_query = f"UPDATE staff_profile SET photo = %s, img_format = %s WHERE staff_id = {id}"
+         cursor.execute(data_query, data)
+
+         # Commit the changes to the database
+         connection.commit()
+         connection.close()
+         return True
+    except:
+        return False
